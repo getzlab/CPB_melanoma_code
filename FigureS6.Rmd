@@ -194,6 +194,7 @@ pdf("figure12_outputs/S6b.RNR_lof_qq.pdf")
 qq_pval(as.numeric(df_lof_res$fisher_p))
 dev.off()
 knitr::include_graphics("figure12_outputs/S6b.RNR_lof_qq.pdf")
+![](figure12_outputs/S6b.RNR_lof_qq.pdf)
 
 pdf("figure12_outputs/S6d.RNR_ns_qq.pdf")
 qq_pval(as.numeric(df_ns_res$fisher_p))
