@@ -462,7 +462,7 @@ makeKMplot_2group(dna_clin,"plot_tmb_binary","figure12_outputs/1b.1.dna_tmb_surv
 knitr::include_graphics("figure12_outputs/1b.1.dna_tmb_survival.pdf")
 ```
 
-<embed src="figure12_outputs/1b.1.dna_tmb_survival.pdf" width="500px" height="500px" type="application/pdf" />
+<embed src="figure12_outputs/1b.1.dna_tmb_survival.pdf?raw=true" width="500px" height="500px" type="application/pdf" />
 
 ``` {.r}
 tmpwt <- wilcox.test(dna_clin[dna_clin$Response=="responder",]$nonsilent_snpdnpindel,dna_clin[dna_clin$Response=="nonresponder",]$nonsilent_snpdnpindel)
