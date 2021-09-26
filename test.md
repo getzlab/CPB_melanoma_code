@@ -59,7 +59,7 @@ hr_lo <- s_coxph$conf.int[1,3]
 hr_hi <- s_coxph$conf.int[1,4]
 hr_string <- paste0("HR=",formatSF(hr,digits=3)," (95% CI, ",formatSF(hr_lo,digits=3),"-",formatSF(hr_hi,digits=3),")","\n",
 names(class_table)[1],"=",class_table[[1]]," ",names(class_table)[2],"=",class_table[[2]])
-pdf(pdf_name,onefile=F)
+png(pdf_name)
 #fit<- do.call(survfit,list(formula = surv ~ class, data = df))
 fit<- surv_fit(surv ~ class, data = df)
 print(ggsurvplot(fit, data = df,pval=TRUE,pval.method=TRUE,legend=c(0.75,0.75),censor=TRUE,palette=c("blue","red"),title=hr_string))
@@ -70,13 +70,19 @@ dna_clin$tmb_binary <- ifelse(dna_clin$nonsilent_snpdnpindel>median(dna_clin$non
 dna_clin$plot_tmb_binary <- ifelse(dna_clin$nonsilent_snpdnpindel>median(dna_clin$nonsilent_snpdnpindel),"High TMB","Low TMB")
 
 dir.create("tmp", showWarnings = FALSE)
-#makeKMplot_2group(dna_clin,"plot_tmb_binary","figure12_outputs/1b.1.dna_tmb_survival.pdf")
-knitr::include_graphics("figure12_outputs/1b.1.dna_tmb_survival.pdf")
+makeKMplot_2group(dna_clin,"plot_tmb_binary","figure12_outputs/1b.1.dna_tmb_survival.png")
 ```
 
-<embed src="figure12_outputs/1b.1.dna_tmb_survival.pdf" width="500" height="500" type="application/pdf" />
+    ## png 
+    ##   2
 
-![](figure12_outputs/1b.1.dna_tmb_survival.pdf)
+``` {.r}
+knitr::include_graphics("figure12_outputs/1b.1.dna_tmb_survival.png")
+```
+
+<img src="figure12_outputs/1b.1.dna_tmb_survival.png" width="500px" height="500px" />
+
+![](figure12_outputs/1b.1.dna_tmb_survival.png)
 
 ``` {.r}
 sessionInfo()
@@ -123,10 +129,10 @@ sessionInfo()
     ## [46] tools_3.4.0         data.table_1.14.0   lifecycle_1.0.0    
     ## [49] multcomp_1.4-6      stringr_1.3.1       plotly_4.9.4.1     
     ## [52] munsell_0.5.0       cluster_2.0.7-1     compiler_3.4.0     
-    ## [55] rlang_0.4.11        htmlwidgets_1.5.4   base64enc_0.1-3    
-    ## [58] rmarkdown_1.5       gtable_0.3.0        codetools_0.2-15   
-    ## [61] R6_2.5.1            zoo_1.8-3           dplyr_0.8.4        
-    ## [64] fastmap_1.1.0       survMisc_0.5.4      utf8_1.2.2         
-    ## [67] rprojroot_1.3-2     stringi_1.2.3       parallel_3.4.0     
-    ## [70] Rcpp_1.0.7          vctrs_0.3.8         rpart_4.1-13       
-    ## [73] acepack_1.4.1       tidyselect_1.0.0
+    ## [55] rlang_0.4.11        htmlwidgets_1.5.4   labeling_0.3       
+    ## [58] base64enc_0.1-3     rmarkdown_1.5       gtable_0.3.0       
+    ## [61] codetools_0.2-15    R6_2.5.1            zoo_1.8-3          
+    ## [64] dplyr_0.8.4         fastmap_1.1.0       survMisc_0.5.4     
+    ## [67] utf8_1.2.2          rprojroot_1.3-2     stringi_1.2.3      
+    ## [70] parallel_3.4.0      Rcpp_1.0.7          vctrs_0.3.8        
+    ## [73] rpart_4.1-13        acepack_1.4.1       tidyselect_1.0.0
