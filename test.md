@@ -74,7 +74,7 @@ dir.create("tmp", showWarnings = FALSE)
 knitr::include_graphics("figure12_outputs/1b.1.dna_tmb_survival.pdf")
 ```
 
-<embed src="figure12_outputs/1b.1.dna_tmb_survival.pdf" width="500px" height="500px" type="application/pdf" />
+<embed src="figure12_outputs/1b.1.dna_tmb_survival.pdf" width="500" height="500" type="application/pdf" />
 
 ![](figure12_outputs/1b.1.dna_tmb_survival.pdf)
 
