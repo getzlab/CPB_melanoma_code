@@ -42,15 +42,15 @@ formatSF <- function(n, digits, format) {
          }
 }
 
-make_marker_plot <- function(df,gene,pdf_name) {
+make_marker_plot <- function(df,gene,png_name) {
 kt <- kruskal.test(df[,gene],df$plot_cluster)
 kt_p <- formatSF(kt$p.value,digits=2,format="e")
 g_skcm_nmf <- ggplot(df,aes_string(x="plot_cluster",y=gene),environment=environment()) + geom_boxplot(aes(fill=plot_cluster),outlier.shape = NA) + geom_jitter() + theme_classic() + ylab(gene) +
 scale_fill_manual(values=cbpalette_reordered) + ggtitle(paste0("Kruskal-Wallis p =",kt_p)) + xlab("") + theme(legend.position="none")
-ggsave(pdf_name,g_skcm_nmf)
+ggsave(png_name,g_skcm_nmf)
 }
 
-makeKMplot_2group <- function(df,var1,pdf_name) {
+makeKMplot_2group <- function(df,var1,png_name) {
 #note: need to pass in clin[!is.na(clin$surv),] or class counts will be wrong
 df$class <- df[,var1]
 class_table <- table(df$class)
@@ -65,27 +65,27 @@ hr_lo <- s_coxph$conf.int[1,3]
 hr_hi <- s_coxph$conf.int[1,4]
 hr_string <- paste0("HR=",formatSF(hr,digits=3)," (95% CI, ",formatSF(hr_lo,digits=3),"-",formatSF(hr_hi,digits=3),")","\n",
 names(class_table)[1],"=",class_table[[1]]," ",names(class_table)[2],"=",class_table[[2]])
-pdf(pdf_name,onefile=F)
+png(png_name,height=700,width=700,res=100)
 #fit<- do.call(survfit,list(formula = surv ~ class, data = df))
 fit<- surv_fit(surv ~ class, data = df)
 print(ggsurvplot(fit, data = df,pval=TRUE,pval.method=TRUE,legend=c(0.75,0.75),censor=TRUE,palette=c("blue","red"),title=hr_string))
 dev.off()
 }
 
-makeKMplot_5group <- function(df,var1,pdf_name) {
+makeKMplot_5group <- function(df,var1,png_name) {
 #note: need to pass in clin[!is.na(clin$surv),] or class counts will be wrong
 df$class <- df[,var1]
 class_table <- table(df$class)
 count_string <- paste0(names(class_table)[1],"=",class_table[[1]]," ",names(class_table)[2],"=",class_table[[2]],"\n",
 names(class_table)[3],"=",class_table[[3]]," ",names(class_table)[4],"=",class_table[[4]]," ",names(class_table)[5],"=",class_table[[5]])
-pdf(pdf_name,onefile=F)
+png(png_name,height=700,width=700,res=100)
 #fit<- do.call(survfit,list(formula = surv ~ class, data = df))
 fit<- surv_fit(surv ~ class, data = df)
 print(ggsurvplot(fit, data = df,pval=TRUE,pval.method=TRUE,legend=c(0.75,0.75),censor=TRUE,palette=cbpalette_reordered,title=count_string))
 dev.off()
 }
 
-makeKMplot_5group_withp <- function(df,var1,pdf_name) {
+makeKMplot_5group_withp <- function(df,var1,png_name) {
 #note: need to pass in clin[!is.na(clin$surv),] or class counts will be wrong
 df$class <- df[,var1]
 class_table <- table(df$class)
@@ -93,7 +93,7 @@ s_coxph <- summary(coxph(surv ~ df[,var1],data=df))
 count_string <- paste0(names(class_table)[1],"=",class_table[[1]]," ",names(class_table)[2],"=",class_table[[2]]," ",names(class_table)[3],"=",class_table[[3]],"\n",
 names(class_table)[4],"=",class_table[[4]]," ",names(class_table)[5],"=",class_table[[5]],
 " Log-rank p=",as.character(formatSF(s_coxph$sctest["pvalue"],digits=3,format="e")))
-pdf(pdf_name,onefile=F)
+png(png_name,height=700,width=700,res=100)
 #fit<- do.call(survfit,list(formula = surv ~ class, data = df))
 fit<- surv_fit(surv ~ class, data = df)
 print(ggsurvplot(fit, data = df,pval=TRUE,pval.method=TRUE,legend=c(0.75,0.75),censor=TRUE,palette=cbpalette_reordered,title=count_string))
@@ -236,17 +236,17 @@ Figure 3
 ``` {.r}
 dir.create("figure3_outputs", showWarnings = FALSE)
 
-makeKMplot_5group_withp(skcm_clin[!is.na(skcm_clin$surv)&skcm_clin$stage34==TRUE,],"plot_cluster","figure3_outputs/3a.skcm_34_subtype_survival.pdf")
+makeKMplot_5group_withp(skcm_clin[!is.na(skcm_clin$surv)&skcm_clin$stage34==TRUE,],"plot_cluster","figure3_outputs/3a.skcm_34_subtype_survival.png")
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/3a.skcm_34_subtype_survival.pdf")
+knitr::include_graphics("figure3_outputs/3a.skcm_34_subtype_survival.png")
 ```
 
-<embed src="figure3_outputs/3a.skcm_34_subtype_survival.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/3a.skcm_34_subtype_survival.png" width="75%" height="75%" />
 
 ``` {.r}
 load(file=paste(paste("figure3_inputs/res.L1EU.Bayes.2.RData",sep="."),sep="")) #### BayesNMF ouput used for the de-novo expression subtyping
@@ -301,13 +301,13 @@ x0 <- expr.fold[match(x,rownames(expr.fold),nomatch=0),ordering]
 gencode <- read.delim(paste("figure3_inputs/gencode.v19.genes.v7.patched_contigs.bed",sep=""),header=T,sep='\t',as.is=T,comment="#")
 rownames(x0) <- gencode$Gene[match(rownames(x0),gencode$Gene.id,nomatch=0)]
 
-pdf(file=paste(OUTPUT,paste("S16a",cohort,"marker0.expr.fold.Bayes",0,"ordered.full.pdf",sep="."),sep=""),width=12,height=12)
+png(file=paste(OUTPUT,paste("S16a",cohort,"marker0.expr.fold.Bayes",0,"ordered.full.png",sep="."),sep=""),width=1600,height=1600,res=200)
         p <- plot.expr.fold.heatmap0(x0,0.5,3.0,g.Bayes[ordering])
         plot(p)
 dev.off()
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
@@ -344,47 +344,47 @@ x <- x[x%in%rownames(expr.fold)]  ### expr.fold=fold-change based expression mat
 x0.new <- expr.fold[match(x,rownames(expr.fold),nomatch=0),ordering.new]
 rownames(x0.new) <- gencode$Gene[match(rownames(x0.new),gencode$Gene.id,nomatch=0)]
 
-pdf(file=paste(OUTPUT,paste("3b",cohort,"marker0.expr.fold.Bayes",0.5,"ordered.full.pdf",sep="."),sep=""),width=12,height=12)
+png(file=paste(OUTPUT,paste("3b",cohort,"marker0.expr.fold.Bayes",0.5,"ordered.full.png",sep="."),sep=""),width=1600,height=1600,res=200)
         p <- plot.expr.fold.heatmap0(x0.new,0.5,3,g.Bayes.new[ordering.new])
         plot(p)
 dev.off()
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/3b.CPB.marker0.expr.fold.Bayes.0.5.ordered.full.pdf")
+knitr::include_graphics("figure3_outputs/3b.CPB.marker0.expr.fold.Bayes.0.5.ordered.full.png")
 ```
 
-<embed src="figure3_outputs/3b.CPB.marker0.expr.fold.Bayes.0.5.ordered.full.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/3b.CPB.marker0.expr.fold.Bayes.0.5.ordered.full.png" width="75%" height="75%" />
 
 ``` {.r}
-makeKMplot_5group(clin[!is.na(clin$surv),],"plot_cluster","figure3_outputs/3c.cpb_subtype_survival.pdf")
+makeKMplot_5group(clin[!is.na(clin$surv),],"plot_cluster","figure3_outputs/3c.cpb_subtype_survival.png")
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/3c.cpb_subtype_survival.pdf")
+knitr::include_graphics("figure3_outputs/3c.cpb_subtype_survival.png")
 ```
 
-<embed src="figure3_outputs/3c.cpb_subtype_survival.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/3c.cpb_subtype_survival.png" width="75%" height="75%" />
 
 ``` {.r}
 clin$plot_Immune <- ifelse(clin$plot_cluster=="Immune","Immune","Others")
-makeKMplot_2group(clin[!is.na(clin$surv),],"plot_Immune","figure3_outputs/3d.cpb_immune_survival.pdf")
+makeKMplot_2group(clin[!is.na(clin$surv),],"plot_Immune","figure3_outputs/3d.cpb_immune_survival.png")
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/3d.cpb_immune_survival.pdf")
+knitr::include_graphics("figure3_outputs/3d.cpb_immune_survival.png")
 ```
 
-<embed src="figure3_outputs/3d.cpb_immune_survival.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/3d.cpb_immune_survival.png" width="75%" height="75%" />
 
 ``` {.r}
 library("tximport")
@@ -431,11 +431,11 @@ all_deseq_pval_threshold_os <- 3
 all_deseq_lfc_threshold_os <- 0.5
 
 g_all_volcano_os <- ggplot(tmpdf_deseq_mediantpm1filtered_all_os,aes(x=-1*log2FoldChange,y=-log10(pvalue))) + geom_point(color="#999999") + theme_bw() + theme(legend.position = "none") + geom_text_repel(data=tmpdf_deseq_mediantpm1filtered_all_os[tmpdf_deseq_mediantpm1filtered_all_os$pvalue<all_deseq_logpval_threshold_os&abs(tmpdf_deseq_mediantpm1filtered_all_os$log2FoldChange)> all_deseq_lfc_threshold_os,],aes(label=gene,x=-1*log2FoldChange,y=-1*log10(pvalue),color=log2FoldChange>0),max.overlaps=100) + geom_point(data=tmpdf_deseq_mediantpm1filtered_all_os[tmpdf_deseq_mediantpm1filtered_all_os$pvalue<all_deseq_logpval_threshold_os&abs(tmpdf_deseq_mediantpm1filtered_all_os$log2FoldChange)> all_deseq_lfc_threshold_os,],aes(x=-1*log2FoldChange,y=-1*log10(pvalue),color=log2FoldChange>0)) + scale_color_manual(values=c("blue","red")) + geom_vline(xintercept=c(-1* all_deseq_lfc_threshold_os, all_deseq_lfc_threshold_os), linetype="dotted") + geom_hline(yintercept=all_deseq_pval_threshold_os, linetype="dotted") + ylab("-log10(p value)") + xlab("log2(Fold Change)")
-ggsave("figure3_outputs/3e.deseq2_all_volcano_os_withlabels.pdf",g_all_volcano_os,height=7,width=7)
-knitr::include_graphics("figure3_outputs/3e.deseq2_all_volcano_os_withlabels.pdf")
+ggsave("figure3_outputs/3e.deseq2_all_volcano_os_withlabels.png",g_all_volcano_os,height=7,width=7)
+knitr::include_graphics("figure3_outputs/3e.deseq2_all_volcano_os_withlabels.png")
 ```
 
-<embed src="figure3_outputs/3e.deseq2_all_volcano_os_withlabels.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/3e.deseq2_all_volcano_os_withlabels.png" width="75%" height="75%" />
 
 ``` {.r}
 print(dim(tmpdf_deseq_mediantpm1filtered_all_os[tmpdf_deseq_mediantpm1filtered_all_os$new_padj<0.05,]))
@@ -455,329 +455,329 @@ Figure S15
 
 ``` {.r}
 plist_SKCM_original <- get.sample.association.heatmap(H,g.Bayes,scale=1)
-ggsave("figure3_outputs/S15a.SKCM_H_norm_newcolors.pdf",plist_SKCM_original[[2]],height=7,width=7)
-knitr::include_graphics("figure3_outputs/S15a.SKCM_H_norm_newcolors.pdf")
+ggsave("figure3_outputs/S15a.SKCM_H_norm_newcolors.png",plist_SKCM_original[[2]],height=7,width=7)
+knitr::include_graphics("figure3_outputs/S15a.SKCM_H_norm_newcolors.png")
 ```
 
-<embed src="figure3_outputs/S15a.SKCM_H_norm_newcolors.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S15a.SKCM_H_norm_newcolors.png" width="75%" height="75%" />
 
 ``` {.r}
-pdf("figure3_outputs/S15b.skcm_cluster_vs_oldTCGA_cluster.pdf")
+png("figure3_outputs/S15b.skcm_cluster_vs_oldTCGA_cluster.png",height=700,width=700,res=100)
 grid.table(table(skcm_clin$plot_TCGA_cluster,skcm_clin$plot_cluster))
 dev.off()
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S15b.skcm_cluster_vs_oldTCGA_cluster.pdf")
+knitr::include_graphics("figure3_outputs/S15b.skcm_cluster_vs_oldTCGA_cluster.png")
 ```
 
-<embed src="figure3_outputs/S15b.skcm_cluster_vs_oldTCGA_cluster.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S15b.skcm_cluster_vs_oldTCGA_cluster.png" width="75%" height="75%" />
 
 ``` {.r}
-pdf("figure3_outputs/S15c.skcm_cluster_site.pdf",height=7,width=10)
+png("figure3_outputs/S15c.skcm_cluster_site.png",height=700,width=1000,res=100)
 grid.table(table(skcm_clin$Tissue.Site,skcm_clin$plot_cluster))
 dev.off()
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S15c.skcm_cluster_site.pdf")
+knitr::include_graphics("figure3_outputs/S15c.skcm_cluster_site.png")
 ```
 
-<embed src="figure3_outputs/S15c.skcm_cluster_site.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S15c.skcm_cluster_site.png" width="75%" height="75%" />
 
 ``` {.r}
-pdf("figure3_outputs/S15dskcm_cluster_vs_tsoi_cluster.pdf")
+png("figure3_outputs/S15dskcm_cluster_vs_tsoi_cluster.png",height=700,width=700,res=100)
 grid.table(table(skcm_clin$tsoi_subtype,skcm_clin$plot_cluster))
 dev.off()
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S15dskcm_cluster_vs_tsoi_cluster.pdf")
+knitr::include_graphics("figure3_outputs/S15dskcm_cluster_vs_tsoi_cluster.png")
 ```
 
-<embed src="figure3_outputs/S15dskcm_cluster_vs_tsoi_cluster.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S15dskcm_cluster_vs_tsoi_cluster.png" width="75%" height="75%" />
 
 Figure S16
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S16a.SKCM.marker0.expr.fold.Bayes.0.ordered.full.pdf")
+knitr::include_graphics("figure3_outputs/S16a.SKCM.marker0.expr.fold.Bayes.0.ordered.full.png")
 ```
 
-<embed src="figure3_outputs/S16a.SKCM.marker0.expr.fold.Bayes.0.ordered.full.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16a.SKCM.marker0.expr.fold.Bayes.0.ordered.full.png" width="75%" height="75%" />
 
 ``` {.r}
 #MITF high
-make_marker_plot(skcm_clin,"PMEL","figure3_outputs/S16b.1_1_skcm_nmf_cluster_PMEL.pdf")
-make_marker_plot(skcm_clin,"TRPM1","figure3_outputs/S16b.1_2_skcm_nmf_cluster_TRPM1.pdf")
-make_marker_plot(skcm_clin,"MITF","figure3_outputs/S16b.1_3_skcm_nmf_cluster_MITF.pdf")
-make_marker_plot(skcm_clin,"MLANA","figure3_outputs/S16b.1_4_skcm_nmf_cluster_MLANA.pdf")
-knitr::include_graphics("figure3_outputs/S16b.1_1_skcm_nmf_cluster_PMEL.pdf")
+make_marker_plot(skcm_clin,"PMEL","figure3_outputs/S16b.1_1_skcm_nmf_cluster_PMEL.png")
+make_marker_plot(skcm_clin,"TRPM1","figure3_outputs/S16b.1_2_skcm_nmf_cluster_TRPM1.png")
+make_marker_plot(skcm_clin,"MITF","figure3_outputs/S16b.1_3_skcm_nmf_cluster_MITF.png")
+make_marker_plot(skcm_clin,"MLANA","figure3_outputs/S16b.1_4_skcm_nmf_cluster_MLANA.png")
+knitr::include_graphics("figure3_outputs/S16b.1_1_skcm_nmf_cluster_PMEL.png")
 ```
 
-<embed src="figure3_outputs/S16b.1_1_skcm_nmf_cluster_PMEL.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16b.1_1_skcm_nmf_cluster_PMEL.png" width="75%" height="75%" />
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S16b.1_2_skcm_nmf_cluster_TRPM1.pdf")
+knitr::include_graphics("figure3_outputs/S16b.1_2_skcm_nmf_cluster_TRPM1.png")
 ```
 
-<embed src="figure3_outputs/S16b.1_2_skcm_nmf_cluster_TRPM1.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16b.1_2_skcm_nmf_cluster_TRPM1.png" width="75%" height="75%" />
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S16b.1_3_skcm_nmf_cluster_MITF.pdf")
+knitr::include_graphics("figure3_outputs/S16b.1_3_skcm_nmf_cluster_MITF.png")
 ```
 
-<embed src="figure3_outputs/S16b.1_3_skcm_nmf_cluster_MITF.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16b.1_3_skcm_nmf_cluster_MITF.png" width="75%" height="75%" />
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S16b.1_4_skcm_nmf_cluster_MLANA.pdf")
+knitr::include_graphics("figure3_outputs/S16b.1_4_skcm_nmf_cluster_MLANA.png")
 ```
 
-<embed src="figure3_outputs/S16b.1_4_skcm_nmf_cluster_MLANA.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16b.1_4_skcm_nmf_cluster_MLANA.png" width="75%" height="75%" />
 
 ``` {.r}
 #Intermediate
-make_marker_plot(skcm_clin,"EDNRB","figure3_outputs/S16b.2_1_skcm_nmf_cluster_EDNRB.pdf")
-make_marker_plot(skcm_clin,"SOX6","figure3_outputs/S16b.2_2_skcm_nmf_cluster_SOX6.pdf")
-make_marker_plot(skcm_clin,"PAX3","figure3_outputs/S16b.2_3_skcm_nmf_cluster_PAX3.pdf")
-make_marker_plot(skcm_clin,"DCT","figure3_outputs/S16b.2_4_skcm_nmf_cluster_DCT.pdf")
-knitr::include_graphics("figure3_outputs/S16b.2_1_skcm_nmf_cluster_EDNRB.pdf")
+make_marker_plot(skcm_clin,"EDNRB","figure3_outputs/S16b.2_1_skcm_nmf_cluster_EDNRB.png")
+make_marker_plot(skcm_clin,"SOX6","figure3_outputs/S16b.2_2_skcm_nmf_cluster_SOX6.png")
+make_marker_plot(skcm_clin,"PAX3","figure3_outputs/S16b.2_3_skcm_nmf_cluster_PAX3.png")
+make_marker_plot(skcm_clin,"DCT","figure3_outputs/S16b.2_4_skcm_nmf_cluster_DCT.png")
+knitr::include_graphics("figure3_outputs/S16b.2_1_skcm_nmf_cluster_EDNRB.png")
 ```
 
-<embed src="figure3_outputs/S16b.2_1_skcm_nmf_cluster_EDNRB.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16b.2_1_skcm_nmf_cluster_EDNRB.png" width="75%" height="75%" />
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S16b.2_2_skcm_nmf_cluster_SOX6.pdf")
+knitr::include_graphics("figure3_outputs/S16b.2_2_skcm_nmf_cluster_SOX6.png")
 ```
 
-<embed src="figure3_outputs/S16b.2_2_skcm_nmf_cluster_SOX6.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16b.2_2_skcm_nmf_cluster_SOX6.png" width="75%" height="75%" />
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S16b.2_3_skcm_nmf_cluster_PAX3.pdf")
+knitr::include_graphics("figure3_outputs/S16b.2_3_skcm_nmf_cluster_PAX3.png")
 ```
 
-<embed src="figure3_outputs/S16b.2_3_skcm_nmf_cluster_PAX3.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16b.2_3_skcm_nmf_cluster_PAX3.png" width="75%" height="75%" />
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S16b.2_4_skcm_nmf_cluster_DCT.pdf")
+knitr::include_graphics("figure3_outputs/S16b.2_4_skcm_nmf_cluster_DCT.png")
 ```
 
-<embed src="figure3_outputs/S16b.2_4_skcm_nmf_cluster_DCT.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16b.2_4_skcm_nmf_cluster_DCT.png" width="75%" height="75%" />
 
 ``` {.r}
 #MITF low
-make_marker_plot(skcm_clin,"AXL","figure3_outputs/S16b.3_1_skcm_nmf_cluster_AXL.pdf")
-make_marker_plot(skcm_clin,"TGFBI","figure3_outputs/S16b.3_2_skcm_nmf_cluster_TGFBI.pdf")
-make_marker_plot(skcm_clin,"NGFR","figure3_outputs/S16b.3_3_skcm_nmf_cluster_NGFR.pdf")
-make_marker_plot(skcm_clin,"TGFA","figure3_outputs/S16b.3_4_skcm_nmf_cluster_TGFA.pdf")
-knitr::include_graphics("figure3_outputs/S16b.3_1_skcm_nmf_cluster_AXL.pdf")
+make_marker_plot(skcm_clin,"AXL","figure3_outputs/S16b.3_1_skcm_nmf_cluster_AXL.png")
+make_marker_plot(skcm_clin,"TGFBI","figure3_outputs/S16b.3_2_skcm_nmf_cluster_TGFBI.png")
+make_marker_plot(skcm_clin,"NGFR","figure3_outputs/S16b.3_3_skcm_nmf_cluster_NGFR.png")
+make_marker_plot(skcm_clin,"TGFA","figure3_outputs/S16b.3_4_skcm_nmf_cluster_TGFA.png")
+knitr::include_graphics("figure3_outputs/S16b.3_1_skcm_nmf_cluster_AXL.png")
 ```
 
-<embed src="figure3_outputs/S16b.3_1_skcm_nmf_cluster_AXL.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16b.3_1_skcm_nmf_cluster_AXL.png" width="75%" height="75%" />
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S16b.3_2_skcm_nmf_cluster_TGFBI.pdf")
+knitr::include_graphics("figure3_outputs/S16b.3_2_skcm_nmf_cluster_TGFBI.png")
 ```
 
-<embed src="figure3_outputs/S16b.3_2_skcm_nmf_cluster_TGFBI.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16b.3_2_skcm_nmf_cluster_TGFBI.png" width="75%" height="75%" />
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S16b.3_3_skcm_nmf_cluster_NGFR.pdf")
+knitr::include_graphics("figure3_outputs/S16b.3_3_skcm_nmf_cluster_NGFR.png")
 ```
 
-<embed src="figure3_outputs/S16b.3_3_skcm_nmf_cluster_NGFR.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16b.3_3_skcm_nmf_cluster_NGFR.png" width="75%" height="75%" />
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S16b.3_4_skcm_nmf_cluster_TGFA.pdf")
+knitr::include_graphics("figure3_outputs/S16b.3_4_skcm_nmf_cluster_TGFA.png")
 ```
 
-<embed src="figure3_outputs/S16b.3_4_skcm_nmf_cluster_TGFA.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16b.3_4_skcm_nmf_cluster_TGFA.png" width="75%" height="75%" />
 
 ``` {.r}
 #Immune
-make_marker_plot(skcm_clin,"CD2","figure3_outputs/S16b.4_1_skcm_nmf_cluster_CD2.pdf")
-make_marker_plot(skcm_clin,"MS4A1","figure3_outputs/S16b.4_2_skcm_nmf_cluster_MS4A1.pdf")
-make_marker_plot(skcm_clin,"PTPRC","figure3_outputs/S16b.4_3_skcm_nmf_cluster_PTPRC.pdf")
-make_marker_plot(skcm_clin,"PDCD1","figure3_outputs/S16b.4_4_skcm_nmf_cluster_PDCD1.pdf")
-knitr::include_graphics("figure3_outputs/S16b.4_1_skcm_nmf_cluster_CD2.pdf")
+make_marker_plot(skcm_clin,"CD2","figure3_outputs/S16b.4_1_skcm_nmf_cluster_CD2.png")
+make_marker_plot(skcm_clin,"MS4A1","figure3_outputs/S16b.4_2_skcm_nmf_cluster_MS4A1.png")
+make_marker_plot(skcm_clin,"PTPRC","figure3_outputs/S16b.4_3_skcm_nmf_cluster_PTPRC.png")
+make_marker_plot(skcm_clin,"PDCD1","figure3_outputs/S16b.4_4_skcm_nmf_cluster_PDCD1.png")
+knitr::include_graphics("figure3_outputs/S16b.4_1_skcm_nmf_cluster_CD2.png")
 ```
 
-<embed src="figure3_outputs/S16b.4_1_skcm_nmf_cluster_CD2.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16b.4_1_skcm_nmf_cluster_CD2.png" width="75%" height="75%" />
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S16b.4_2_skcm_nmf_cluster_MS4A1.pdf")
+knitr::include_graphics("figure3_outputs/S16b.4_2_skcm_nmf_cluster_MS4A1.png")
 ```
 
-<embed src="figure3_outputs/S16b.4_2_skcm_nmf_cluster_MS4A1.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16b.4_2_skcm_nmf_cluster_MS4A1.png" width="75%" height="75%" />
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S16b.4_3_skcm_nmf_cluster_PTPRC.pdf")
+knitr::include_graphics("figure3_outputs/S16b.4_3_skcm_nmf_cluster_PTPRC.png")
 ```
 
-<embed src="figure3_outputs/S16b.4_3_skcm_nmf_cluster_PTPRC.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16b.4_3_skcm_nmf_cluster_PTPRC.png" width="75%" height="75%" />
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S16b.4_4_skcm_nmf_cluster_PDCD1.pdf")
+knitr::include_graphics("figure3_outputs/S16b.4_4_skcm_nmf_cluster_PDCD1.png")
 ```
 
-<embed src="figure3_outputs/S16b.4_4_skcm_nmf_cluster_PDCD1.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16b.4_4_skcm_nmf_cluster_PDCD1.png" width="75%" height="75%" />
 
 ``` {.r}
 #keratin high
-make_marker_plot(skcm_clin,"KRT10","figure3_outputs/S16b.5_1_skcm_nmf_cluster_KRT10.pdf")
-make_marker_plot(skcm_clin,"KRT5","figure3_outputs/S16b.5_2_skcm_nmf_cluster_KRT5.pdf")
-make_marker_plot(skcm_clin,"DMKN","figure3_outputs/S16b.5_3_skcm_nmf_cluster_DMKN.pdf")
-make_marker_plot(skcm_clin,"DEGS2","figure3_outputs/S16b.5_4_skcm_nmf_cluster_DEGS2.pdf")
-knitr::include_graphics("figure3_outputs/S16b.5_1_skcm_nmf_cluster_KRT10.pdf")
+make_marker_plot(skcm_clin,"KRT10","figure3_outputs/S16b.5_1_skcm_nmf_cluster_KRT10.png")
+make_marker_plot(skcm_clin,"KRT5","figure3_outputs/S16b.5_2_skcm_nmf_cluster_KRT5.png")
+make_marker_plot(skcm_clin,"DMKN","figure3_outputs/S16b.5_3_skcm_nmf_cluster_DMKN.png")
+make_marker_plot(skcm_clin,"DEGS2","figure3_outputs/S16b.5_4_skcm_nmf_cluster_DEGS2.png")
+knitr::include_graphics("figure3_outputs/S16b.5_1_skcm_nmf_cluster_KRT10.png")
 ```
 
-<embed src="figure3_outputs/S16b.5_1_skcm_nmf_cluster_KRT10.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16b.5_1_skcm_nmf_cluster_KRT10.png" width="75%" height="75%" />
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S16b.5_2_skcm_nmf_cluster_KRT5.pdf")
+knitr::include_graphics("figure3_outputs/S16b.5_2_skcm_nmf_cluster_KRT5.png")
 ```
 
-<embed src="figure3_outputs/S16b.5_2_skcm_nmf_cluster_KRT5.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16b.5_2_skcm_nmf_cluster_KRT5.png" width="75%" height="75%" />
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S16b.5_3_skcm_nmf_cluster_DMKN.pdf")
+knitr::include_graphics("figure3_outputs/S16b.5_3_skcm_nmf_cluster_DMKN.png")
 ```
 
-<embed src="figure3_outputs/S16b.5_3_skcm_nmf_cluster_DMKN.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16b.5_3_skcm_nmf_cluster_DMKN.png" width="75%" height="75%" />
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S16b.5_4_skcm_nmf_cluster_DEGS2.pdf")
+knitr::include_graphics("figure3_outputs/S16b.5_4_skcm_nmf_cluster_DEGS2.png")
 ```
 
-<embed src="figure3_outputs/S16b.5_4_skcm_nmf_cluster_DEGS2.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16b.5_4_skcm_nmf_cluster_DEGS2.png" width="75%" height="75%" />
 
 ``` {.r}
 kt <- kruskal.test(log10(skcm_clin$nonsilent_snpdnpindel+1),skcm_clin$plot_cluster)
 kt_p <- formatSF(kt$p.value,format="e",digits=2)
 g_skcm_nmf_tmb <- ggplot(skcm_clin,aes(x=plot_cluster,y=nonsilent_snpdnpindel+1)) + geom_boxplot(aes(fill=plot_cluster),outlier.shape = NA) + geom_jitter() + scale_y_log10() + ylab("TMB") +
 theme_classic() + scale_fill_manual(values= cbpalette_reordered) + xlab("") + annotate(geom="text",x=2.5,y=5000,label=paste0("Kruskal-Wallis p =",kt_p))
-ggsave("figure3_outputs/S16c.skcm_nmf_cluster_tmb.pdf",g_skcm_nmf_tmb)
-knitr::include_graphics("figure3_outputs/S16c.skcm_nmf_cluster_tmb.pdf")
+ggsave("figure3_outputs/S16c.skcm_nmf_cluster_tmb.png",g_skcm_nmf_tmb)
+knitr::include_graphics("figure3_outputs/S16c.skcm_nmf_cluster_tmb.png")
 ```
 
-<embed src="figure3_outputs/S16c.skcm_nmf_cluster_tmb.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16c.skcm_nmf_cluster_tmb.png" width="75%" height="75%" />
 
 ``` {.r}
 kt <- kruskal.test(skcm_clin[!is.na(skcm_clin$purity),]$purity,skcm_clin[!is.na(skcm_clin$purity),]$plot_cluster)
 kt_p <- formatSF(kt$p.value,format="e",digits=2)
 g_skcm_nmf_purity <- ggplot(skcm_clin[!is.na(skcm_clin$purity),],aes(x=plot_cluster,y=purity)) + geom_boxplot(aes(fill=plot_cluster),outlier.shape = NA) + geom_jitter() + ylab("Tumor purity") +
 theme_classic() + scale_fill_manual(values= cbpalette_reordered) + xlab("") + annotate(geom="text",x=2.5,y=0.25,label=paste0("Kruskal-Wallis p =",kt_p))
-ggsave("figure3_outputs/S16d.skcm_nmf_cluster_purity.pdf",g_skcm_nmf_purity)
-knitr::include_graphics("figure3_outputs/S16d.skcm_nmf_cluster_purity.pdf")
+ggsave("figure3_outputs/S16d.skcm_nmf_cluster_purity.png",g_skcm_nmf_purity)
+knitr::include_graphics("figure3_outputs/S16d.skcm_nmf_cluster_purity.png")
 ```
 
-<embed src="figure3_outputs/S16d.skcm_nmf_cluster_purity.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16d.skcm_nmf_cluster_purity.png" width="75%" height="75%" />
 
 ``` {.r}
 kt <- kruskal.test(skcm_clin$rna_tcb,skcm_clin$plot_cluster)
 kt_p <- formatSF(kt$p.value,format="e",digits=2)
 g_skcm_nmf_tcb <- ggplot(skcm_clin,aes(x=plot_cluster,y=rna_tcb)) + geom_boxplot(aes(fill=plot_cluster),outlier.shape = NA) + geom_jitter() + ylab(expression(TCB[RNA])) + theme_classic() +
 scale_fill_manual(values= cbpalette_reordered) + xlab("") + scale_y_log10() + annotate(geom="text",x=2.5,y=10,label=paste0("Kruskal-Wallis p =",kt_p))
-ggsave("figure3_outputs/S16e.skcm_nmf_cluster_tcb.pdf",g_skcm_nmf_tcb)
-knitr::include_graphics("figure3_outputs/S16e.skcm_nmf_cluster_tcb.pdf")
+ggsave("figure3_outputs/S16e.skcm_nmf_cluster_tcb.png",g_skcm_nmf_tcb)
+knitr::include_graphics("figure3_outputs/S16e.skcm_nmf_cluster_tcb.png")
 ```
 
-<embed src="figure3_outputs/S16e.skcm_nmf_cluster_tcb.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16e.skcm_nmf_cluster_tcb.png" width="75%" height="75%" />
 
 ``` {.r}
 kt <- kruskal.test(skcm_clin$rna_bcb,skcm_clin$plot_cluster)
 kt_p <- formatSF(kt$p.value,format="e",digits=2)
 g_skcm_nmf_bcb <- ggplot(skcm_clin,aes(x=plot_cluster,y=rna_bcb)) + geom_boxplot(aes(fill=plot_cluster),outlier.shape = NA) + geom_jitter() + ylab(expression(BCB[DNA])) + theme_classic() +
 scale_fill_manual(values= cbpalette_reordered) + xlab("") + scale_y_log10() + annotate(geom="text",x=2.5,y=3000,label=paste0("Kruskal-Wallis p =",kt_p))
-ggsave("figure3_outputs/S16f.skcm_nmf_cluster_bcb.pdf",g_skcm_nmf_bcb)
-knitr::include_graphics("figure3_outputs/S16f.skcm_nmf_cluster_bcb.pdf")
+ggsave("figure3_outputs/S16f.skcm_nmf_cluster_bcb.png",g_skcm_nmf_bcb)
+knitr::include_graphics("figure3_outputs/S16f.skcm_nmf_cluster_bcb.png")
 ```
 
-<embed src="figure3_outputs/S16f.skcm_nmf_cluster_bcb.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16f.skcm_nmf_cluster_bcb.png" width="75%" height="75%" />
 
 ``` {.r}
-makeKMplot_5group_withp(skcm_clin[!is.na(skcm_clin$surv),],"plot_cluster","figure3_outputs/S16g.skcm_subtype_survival.pdf")
+makeKMplot_5group_withp(skcm_clin[!is.na(skcm_clin$surv),],"plot_cluster","figure3_outputs/S16g.skcm_subtype_survival.png")
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S16g.skcm_subtype_survival.pdf")
+knitr::include_graphics("figure3_outputs/S16g.skcm_subtype_survival.png")
 ```
 
-<embed src="figure3_outputs/S16g.skcm_subtype_survival.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S16g.skcm_subtype_survival.png" width="75%" height="75%" />
 
 Figure S17
 
 ``` {.r}
 plist_CPB_proj <- get.sample.association.heatmap(H.Bayes.new,g.Bayes.new,scale=1)
-ggsave("figure3_outputs/S17b.CPB_H_norm_newcolors.pdf",plist_CPB_proj[[2]],height=7,width=7)
-knitr::include_graphics("figure3_outputs/S17b.CPB_H_norm_newcolors.pdf")
+ggsave("figure3_outputs/S17b.CPB_H_norm_newcolors.png",plist_CPB_proj[[2]],height=7,width=7)
+knitr::include_graphics("figure3_outputs/S17b.CPB_H_norm_newcolors.png")
 ```
 
-<embed src="figure3_outputs/S17b.CPB_H_norm_newcolors.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S17b.CPB_H_norm_newcolors.png" width="75%" height="75%" />
 
 ``` {.r}
 mdf_cohort_cluster <- reshape2::melt(table(clin$cohort,clin$plot_cluster))
 g_cohort_cluster <- ggplot(mdf_cohort_cluster,aes(x=Var1,y=value,fill=Var2)) + geom_col() + scale_fill_manual(values=cbpalette_reordered) + theme_classic() + xlab("Cohort") + ylab("Frequency")
-ggsave("figure3_outputs/S17c.barplot_rna_cluster_by_cohort.pdf",g_cohort_cluster)
-knitr::include_graphics("figure3_outputs/S17c.barplot_rna_cluster_by_cohort.pdf")
+ggsave("figure3_outputs/S17c.barplot_rna_cluster_by_cohort.png",g_cohort_cluster)
+knitr::include_graphics("figure3_outputs/S17c.barplot_rna_cluster_by_cohort.png")
 ```
 
-<embed src="figure3_outputs/S17c.barplot_rna_cluster_by_cohort.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S17c.barplot_rna_cluster_by_cohort.png" width="75%" height="75%" />
 
 ``` {.r}
 kt <- kruskal.test(log10(clin[!is.na(clin$purity),]$nonsilent_snpdnpindel),clin[!is.na(clin$purity),]$plot_cluster)
 kt_p <- formatSF(kt$p.value,format="e",digits=2)
 g_cpb_nmf_tmb <- ggplot(clin[!is.na(clin$purity),],aes(x=plot_cluster,y=nonsilent_snpdnpindel)) + geom_boxplot(aes(fill=plot_cluster),outlier.shape = NA) + geom_jitter() +
 scale_y_log10() + ylab("TMB") + theme_classic() + scale_fill_manual(values= cbpalette_reordered) + xlab("") + annotate(geom="text",x=3,y=2000,label=paste0("Kruskal-Wallis p =",kt_p))
-ggsave("figure3_outputs/S17d.cpb_nmf_cluster_tmb.pdf",g_cpb_nmf_tmb)
-knitr::include_graphics("figure3_outputs/S17d.cpb_nmf_cluster_tmb.pdf")
+ggsave("figure3_outputs/S17d.cpb_nmf_cluster_tmb.png",g_cpb_nmf_tmb)
+knitr::include_graphics("figure3_outputs/S17d.cpb_nmf_cluster_tmb.png")
 ```
 
-<embed src="figure3_outputs/S17d.cpb_nmf_cluster_tmb.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S17d.cpb_nmf_cluster_tmb.png" width="75%" height="75%" />
 
 ``` {.r}
 kt <- kruskal.test(clin[!is.na(clin$purity),]$purity,clin[!is.na(clin$purity),]$plot_cluster)
 kt_p <- formatSF(kt$p.value,format="e",digits=2)
 g_cpb_nmf_purity <- ggplot(clin[!is.na(clin$purity),],aes(x=plot_cluster,y=purity)) + geom_boxplot(aes(fill=plot_cluster),outlier.shape = NA) + geom_jitter() +
 ylab("Tumor purity") + theme_classic() + scale_fill_manual(values= cbpalette_reordered) + xlab("") + annotate(geom="text",x=2.5,y=0.15,label=paste0("Kruskal-Wallis p =",kt_p))
-ggsave("figure3_outputs/S17e.cpb_nmf_cluster_purity.pdf",g_cpb_nmf_purity)
-knitr::include_graphics("figure3_outputs/S17e.cpb_nmf_cluster_purity.pdf")
+ggsave("figure3_outputs/S17e.cpb_nmf_cluster_purity.png",g_cpb_nmf_purity)
+knitr::include_graphics("figure3_outputs/S17e.cpb_nmf_cluster_purity.png")
 ```
 
-<embed src="figure3_outputs/S17e.cpb_nmf_cluster_purity.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S17e.cpb_nmf_cluster_purity.png" width="75%" height="75%" />
 
 ``` {.r}
 kt <- kruskal.test(log10(clin$rna_tcb),clin$plot_cluster)
 kt_p <- formatSF(kt$p.value,format="e",digits=2)
 g_cpb_nmf_tcb <- ggplot(clin,aes(x=plot_cluster,y=rna_tcb)) + geom_boxplot(aes(fill=plot_cluster),outlier.shape = NA) + geom_jitter() +
 scale_y_log10() + ylab(expression(TCB[RNA])) + theme_classic() + scale_fill_manual(values= cbpalette_reordered) + xlab("") + annotate(geom="text",x=3,y=10,label=paste0("Kruskal-Wallis p =",kt_p))
-ggsave("figure3_outputs/S17f.cpb_nmf_cluster_tcb.pdf",g_cpb_nmf_tcb)
-knitr::include_graphics("figure3_outputs/S17f.cpb_nmf_cluster_tcb.pdf")
+ggsave("figure3_outputs/S17f.cpb_nmf_cluster_tcb.png",g_cpb_nmf_tcb)
+knitr::include_graphics("figure3_outputs/S17f.cpb_nmf_cluster_tcb.png")
 ```
 
-<embed src="figure3_outputs/S17f.cpb_nmf_cluster_tcb.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S17f.cpb_nmf_cluster_tcb.png" width="75%" height="75%" />
 
 ``` {.r}
 kt <- kruskal.test(log10(clin$rna_bcb),clin$plot_cluster)
 kt_p <- formatSF(kt$p.value,format="e",digits=2)
 g_cpb_nmf_bcb <- ggplot(clin,aes(x=plot_cluster,y=rna_bcb)) + geom_boxplot(aes(fill=plot_cluster),outlier.shape = NA) + geom_jitter() +
 scale_y_log10() + ylab(expression(BCB[RNA])) + theme_classic() + scale_fill_manual(values= cbpalette_reordered) + xlab("") + annotate(geom="text",x=3,y=3000,label=paste0("Kruskal-Wallis p =",kt_p))
-ggsave("figure3_outputs/S17g.cpb_nmf_cluster_bcb.pdf",g_cpb_nmf_bcb)
-knitr::include_graphics("figure3_outputs/S17g.cpb_nmf_cluster_bcb.pdf")
+ggsave("figure3_outputs/S17g.cpb_nmf_cluster_bcb.png",g_cpb_nmf_bcb)
+knitr::include_graphics("figure3_outputs/S17g.cpb_nmf_cluster_bcb.png")
 ```
 
-<embed src="figure3_outputs/S17g.cpb_nmf_cluster_bcb.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S17g.cpb_nmf_cluster_bcb.png" width="75%" height="75%" />
 
 ``` {.r}
 tmp_ft <- chisq.test(table(clin$Response,clin$plot_cluster))
@@ -792,11 +792,11 @@ tdf <- melt(table(clin$Response,clin$plot_cluster))
 g_rnr_temp <- ggplot(tdf) + geom_mosaic(data=tdf,aes(weight=value,x=ggmosaic::product(Var2),fill=Var1),offset=0.01) + scale_fill_manual(values=c("red","blue")) + theme_bw() +
 theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),legend.title=element_blank(),axis.text.x=element_text(size=12,angle=90),axis.text.y=element_text(size=12)) +
 xlab("") + ylab("") + annotate(geom="text",x=0.5,y=1.02,label=tmp_ft_pstring) + scale_y_continuous(breaks=seq(0,1,by=0.25)) 
-ggsave("figure3_outputs/S17h.cpb_cluster_response.pdf",g_rnr_temp + geom_text(data = ggplot_build(g_rnr_temp)$data[[1]], aes(x = (xmin+xmax)/2, y = (ymin+ymax)/2, label=.wt)),height=7,width=7)
-knitr::include_graphics("figure3_outputs/S17h.cpb_cluster_response.pdf")
+ggsave("figure3_outputs/S17h.cpb_cluster_response.png",g_rnr_temp + geom_text(data = ggplot_build(g_rnr_temp)$data[[1]], aes(x = (xmin+xmax)/2, y = (ymin+ymax)/2, label=.wt)),height=7,width=7)
+knitr::include_graphics("figure3_outputs/S17h.cpb_cluster_response.png")
 ```
 
-<embed src="figure3_outputs/S17h.cpb_cluster_response.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S17h.cpb_cluster_response.png" width="75%" height="75%" />
 
 Figure S18
 
@@ -828,11 +828,11 @@ all_deseq_lfc_threshold <- 0.75
 g_all_volcano_base_fix <- ggplot(tmpdf_deseq_mediantpm1filtered_all_fix,aes(x=log2FoldChange,y=-log10(pvalue))) + geom_point(color="#999999") + theme_bw() + theme(legend.position = "none") + geom_vline(xintercept=c(-1* all_deseq_lfc_threshold, all_deseq_lfc_threshold), linetype="dotted") + geom_hline(yintercept=all_deseq_pval_threshold, linetype="dotted") + ylab("-log10(p value)") + xlab("log2(Fold Change)") + geom_point(data=tmpdf_deseq_mediantpm1filtered_all_fix[tmpdf_deseq_mediantpm1filtered_all_fix$pvalue<all_deseq_logpval_threshold&abs(tmpdf_deseq_mediantpm1filtered_all_fix$log2FoldChange)> all_deseq_lfc_threshold,],aes(x=log2FoldChange,y=-1*log10(pvalue),color=log2FoldChange>0)) + scale_color_manual(values=c("red","blue"))
 
 g_all_volcano_fix <- g_all_volcano_base_fix + geom_text_repel(data=tmpdf_deseq_mediantpm1filtered_all_fix[tmpdf_deseq_mediantpm1filtered_all_fix$pvalue<all_deseq_logpval_threshold&abs(tmpdf_deseq_mediantpm1filtered_all_fix$log2FoldChange)> all_deseq_lfc_threshold,],aes(label=gene,x=log2FoldChange,y=-1*log10(pvalue),color=log2FoldChange>0),max.overlaps=100)
-ggsave("figure3_outputs/S18a.deseq2_RNR_volcano_withlabels.pdf",g_all_volcano_fix,height=7,width=7)
-knitr::include_graphics("figure3_outputs/S18a.deseq2_RNR_volcano_withlabels.pdf")
+ggsave("figure3_outputs/S18a.deseq2_RNR_volcano_withlabels.png",g_all_volcano_fix,height=7,width=7)
+knitr::include_graphics("figure3_outputs/S18a.deseq2_RNR_volcano_withlabels.png")
 ```
 
-<embed src="figure3_outputs/S18a.deseq2_RNR_volcano_withlabels.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure3_outputs/S18a.deseq2_RNR_volcano_withlabels.png" width="75%" height="75%" />
 
 ``` {.r}
 print(dim(tmpdf_deseq_mediantpm1filtered_all_fix[tmpdf_deseq_mediantpm1filtered_all_fix$new_padj<0.05,]))

@@ -368,17 +368,17 @@ g_val_os_CCLE_HPA <- ggplot(val_df_res_os_sig[!is.na(val_df_res_os_sig$human_pro
 geom_point(aes(color=log2FoldChange<0)) + geom_vline(xintercept=1) +  geom_hline(yintercept=1) + theme_classic(base_size=16) + scale_color_manual(values=c("#D55E00","#0072B2")) +
 theme(legend.position="bottom") + geom_text_repel(aes(label=gene),size=3) + geom_abline(slope=1,intercept=0) + xlim(0,10) + ylim(0,7) +
 xlab("HPA Blood median log2(TPM+1)") + ylab("CCLE Melanoma median log2(TPM+1)")
-ggsave("figure3_outputs/3f.CCLE_HPA_expression_OSgenes.pdf",g_val_os_CCLE_HPA,height=7,width=7)
+ggsave("figure3_outputs/3f.CCLE_HPA_expression_OSgenes.png",g_val_os_CCLE_HPA,height=7,width=7)
 ```
 
     ## Warning: ggrepel: 10 unlabeled data points (too many overlaps). Consider
     ## increasing max.overlaps
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/3f.CCLE_HPA_expression_OSgenes.pdf")
+knitr::include_graphics("figure3_outputs/3f.CCLE_HPA_expression_OSgenes.png")
 ```
 
-<embed src="figure3_outputs/3f.CCLE_HPA_expression_OSgenes.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure3_outputs/3f.CCLE_HPA_expression_OSgenes.png" width="75%" height="75%" />
 
 ``` {.r}
 tmp_cor_res_os <- cor(t(fcmeta_tab[rownames(val_df_res_os_sig),]))
@@ -387,19 +387,19 @@ colnames(tmp_cor_res_os) <- val_df_res_os_sig$gene
 m_tmp_cor_res_os <- reshape2::melt(tmp_cor_res_os)
 m_tmp_cor_res_os$gene_pair <- paste0(m_tmp_cor_res_os$Var1,"_",m_tmp_cor_res_os$Var2)
 
-pdf("figure3_outputs/S19a.val_gene_cor_os.pdf")
+png("figure3_outputs/S19a.val_gene_cor_os.png",height=1000,width=1000,res=175)
 corrplot(tmp_cor_res_os, tl.cex=0.50,type = "upper", order = "hclust",tl.col = "black", tl.srt = 90,col=colorRampPalette(c("blue","white","red"))(200))
 dev.off()
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S19a.val_gene_cor_os.pdf")
+knitr::include_graphics("figure3_outputs/S19a.val_gene_cor_os.png")
 ```
 
-<embed src="figure3_outputs/S19a.val_gene_cor_os.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure3_outputs/S19a.val_gene_cor_os.png" width="75%" height="75%" />
 
 ``` {.r}
 dt_hpa_os <- data.table(t(log2(hpa_tab[unlist(lapply(strsplit(rownames(val_df_res_os_sig[val_df_res_os_sig$log2FoldChange<0,]),"\\."),"[",1)),]+1)))
@@ -413,11 +413,11 @@ m_hpa_os_rank$Var1 <- factor(as.character(m_hpa_os_rank$Var1),levels=rev(as.char
 
 g_osgene_hpa_ranks <- ggplot(m_hpa_os_rank,aes(x=Var1,y=value)) + geom_boxplot(aes(fill=Var1),outlier.shape=NA) + geom_jitter(height=0) + theme_classic(base_size=16) +
 theme(legend.position="none",axis.text.x=element_text(angle=90,hjust=1)) + xlab("") + ylab("HPA Blood cell type expression rank")
-ggsave("figure3_outputs/S19c.OSgene_HPA_expression_rank.pdf",g_osgene_hpa_ranks,height=6,width=12)
-knitr::include_graphics("figure3_outputs/S19c.OSgene_HPA_expression_rank.pdf")
+ggsave("figure3_outputs/S19c.OSgene_HPA_expression_rank.png",g_osgene_hpa_ranks,height=6,width=12)
+knitr::include_graphics("figure3_outputs/S19c.OSgene_HPA_expression_rank.png")
 ```
 
-<embed src="figure3_outputs/S19c.OSgene_HPA_expression_rank.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure3_outputs/S19c.OSgene_HPA_expression_rank.png" width="75%" height="75%" />
 
 ``` {.r}
 dt_hpa_os_zscore <- data.table(t(log2(hpa_tab[unlist(lapply(strsplit(rownames(val_df_res_os_sig[val_df_res_os_sig$log2FoldChange<0,]),"\\."),"[",1)),]+1)))
@@ -435,7 +435,7 @@ dev.off()
     ##           1
 
 ``` {.r}
-pdf("figure3_outputs/S19b.OSgene_HPA_zscore_nobreaks.pdf",height=7,width=8)
+png("figure3_outputs/S19b.OSgene_HPA_zscore_nobreaks.png",height=700,width=800,res=100)
 pheatmap(df_hpa_os_zscore[,!(colnames(df_hpa_os_zscore) %in% c("C4A","CCL21"))],color=rev(brewer.pal(n=11, name="RdBu")),fontsize_col=8,fontsize_row=8,cellheight=8,cellwidth=8,treeheight_row=15,treeheight_col=15)
 dev.off()
 ```
@@ -444,10 +444,10 @@ dev.off()
     ##           1
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S19b.OSgene_HPA_zscore_nobreaks.pdf")
+knitr::include_graphics("figure3_outputs/S19b.OSgene_HPA_zscore_nobreaks.png")
 ```
 
-<embed src="figure3_outputs/S19b.OSgene_HPA_zscore_nobreaks.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure3_outputs/S19b.OSgene_HPA_zscore_nobreaks.png" width="75%" height="75%" />
 
 ``` {.r}
 temp_colors <- c("#56B4E9","#009E73","#999999","#F0E442","#E69F00")
@@ -463,11 +463,11 @@ m_cpb_os_rank$Var1 <- factor(as.character(m_cpb_os_rank$Var1),levels=rev(as.char
 g_osgene_cpb_ranks <- ggplot(m_cpb_os_rank,aes(x=Var1,y=value)) + geom_boxplot(aes(fill=Var1),outlier.shape=NA) + geom_jitter(height=0) + theme_classic(base_size=16) +
 theme(legend.position="none",axis.text.x=element_text(angle=90,hjust=1)) + xlab("") + ylab("Melanoma subtype expression rank") +
 scale_fill_manual(values=temp_colors[rev(as.character(arrange(data.table(m_cpb_os_rank)[,median(value),by=Var1],V1)$Var1))])
-ggsave("figure3_outputs/S19e.OSgene_subtype_expression_rank.pdf",g_osgene_cpb_ranks,height=7,width=12)
-knitr::include_graphics("figure3_outputs/S19e.OSgene_subtype_expression_rank.pdf")
+ggsave("figure3_outputs/S19e.OSgene_subtype_expression_rank.png",g_osgene_cpb_ranks,height=7,width=12)
+knitr::include_graphics("figure3_outputs/S19e.OSgene_subtype_expression_rank.png")
 ```
 
-<embed src="figure3_outputs/S19e.OSgene_subtype_expression_rank.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure3_outputs/S19e.OSgene_subtype_expression_rank.png" width="75%" height="75%" />
 
 ``` {.r}
 dt_cpb_os_zscore <- data.table(t(fcmeta_tab[rownames(val_df_res_os_sig[val_df_res_os_sig$log2FoldChange>0,]),]))
@@ -478,7 +478,7 @@ df_cpb_os_zscore <- data.frame(dt_cpb_os_zscore[ , lapply(.SD, mean) , by=plot_c
 rownames(df_cpb_os_zscore) <- df_cpb_os_zscore$plot_cluster
 df_cpb_os_zscore$plot_cluster <- NULL
 
-pdf("figure3_outputs/S19d.OSgene_subtype_zscore_nobreaks.pdf",height=4,width=6)
+png("figure3_outputs/S19d.OSgene_subtype_zscore_nobreaks.png",height=400,width=600,res=100)
 pheatmap(df_cpb_os_zscore,color=rev(brewer.pal(n=11, name="RdBu")),fontsize_col=8,fontsize_row=8,cellheight=8,cellwidth=8,treeheight_row=15,treeheight_col=15)
 dev.off()
 ```
@@ -487,10 +487,10 @@ dev.off()
     ##           1
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S19d.OSgene_subtype_zscore_nobreaks.pdf")
+knitr::include_graphics("figure3_outputs/S19d.OSgene_subtype_zscore_nobreaks.png")
 ```
 
-<embed src="figure3_outputs/S19d.OSgene_subtype_zscore_nobreaks.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure3_outputs/S19d.OSgene_subtype_zscore_nobreaks.png" width="75%" height="75%" />
 
 ``` {.r}
 r_nr_genes <- sort(val_df_res_sig$gene)
@@ -510,7 +510,7 @@ futile.logger::flog.threshold(futile.logger::ERROR, name = "VennDiagramLogger")
     ## NULL
 
 ``` {.r}
-pdf("figure3_outputs/S18b.RNR_longshortOS_euler.pdf")
+png("figure3_outputs/S18b.RNR_longshortOS_euler.png",height=700,width=700,res=125)
 group.venn(list("R and NR genes"=r_nr_genes,"Long and Short OS genes"=long_short_os_genes), label=TRUE,fill=c("red","blue"),lab.cex=0.3,cat.pos = c(0, 0))
 dev.off()
 ```
@@ -519,10 +519,10 @@ dev.off()
     ##           1
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S18b.RNR_longshortOS_euler.pdf")
+knitr::include_graphics("figure3_outputs/S18b.RNR_longshortOS_euler.png")
 ```
 
-<embed src="figure3_outputs/S18b.RNR_longshortOS_euler.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure3_outputs/S18b.RNR_longshortOS_euler.png" width="75%" height="75%" />
 
 ``` {.r}
 val_df_res_sig$CCLE_median_TPM <- as.numeric(apply(pcaexl_ccle_melanoma_tab[rownames(val_df_res_sig),],1,median))
@@ -532,11 +532,11 @@ g_val_rnr_CCLE_HPA <- ggplot(val_df_res_sig[!is.na(val_df_res_sig$human_protein_
 geom_point(aes(color=log2FoldChange>0)) + geom_vline(xintercept=1) +  geom_hline(yintercept=1) + theme_classic(base_size=16) + scale_color_manual(values=c("red","blue")) +
 theme(legend.position="bottom") + geom_text_repel(aes(label=gene),size=3,max.overlaps=100) + geom_abline(slope=1,intercept=0) + xlim(0,13) + ylim(0,7) +
 xlab("HPA Blood median log2(TPM+1)") + ylab("CCLE Melanoma median log2(TPM+1)")
-ggsave("figure3_outputs/S18.c.CCLE_HPA_expression_RNRgenes.pdf",g_val_rnr_CCLE_HPA)
-knitr::include_graphics("figure3_outputs/S18.c.CCLE_HPA_expression_RNRgenes.pdf")
+ggsave("figure3_outputs/S18.c.CCLE_HPA_expression_RNRgenes.png",g_val_rnr_CCLE_HPA)
+knitr::include_graphics("figure3_outputs/S18.c.CCLE_HPA_expression_RNRgenes.png")
 ```
 
-<embed src="figure3_outputs/S18.c.CCLE_HPA_expression_RNRgenes.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure3_outputs/S18.c.CCLE_HPA_expression_RNRgenes.png" width="75%" height="75%" />
 
 ``` {.r}
 tmp_cor_res <- cor(t(fcmeta_tab[rownames(val_df_res_sig),]))
@@ -545,7 +545,7 @@ colnames(tmp_cor_res) <- val_df_res_sig$gene
 m_tmp_cor_res <- reshape2::melt(tmp_cor_res)
 m_tmp_cor_res$gene_pair <- paste0(m_tmp_cor_res$Var1,"_",m_tmp_cor_res$Var2)
 
-pdf("figure3_outputs/S20a.val_gene_cor.pdf")
+png("figure3_outputs/S20a.val_gene_cor.png",height=1000,width=1000,res=200)
 corrplot(tmp_cor_res, tl.cex=0.35,type = "upper", order = "hclust",tl.col = "black", tl.srt = 90,col=colorRampPalette(c("blue","white","red"))(200))
 dev.off()
 ```
@@ -554,10 +554,10 @@ dev.off()
     ##           1
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S20a.val_gene_cor.pdf")
+knitr::include_graphics("figure3_outputs/S20a.val_gene_cor.png")
 ```
 
-<embed src="figure3_outputs/S20a.val_gene_cor.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure3_outputs/S20a.val_gene_cor.png" width="75%" height="75%" />
 
 ``` {.r}
 dt_hpa_rnr <- data.table(t(log2(hpa_tab[unlist(lapply(strsplit(rownames(val_df_res_sig[val_df_res_sig$log2FoldChange>0,]),"\\."),"[",1)),]+1)))
@@ -570,11 +570,11 @@ m_hpa_rnr_rank$Var1 <- gsub("\\."," ",m_hpa_rnr_rank$Var1)
 m_hpa_rnr_rank$Var1 <- factor(as.character(m_hpa_rnr_rank$Var1),levels=rev(as.character(arrange(data.table(m_hpa_rnr_rank)[,median(value),by=Var1],V1)$Var1)))
 g_rnrgene_hpa_ranks <- ggplot(m_hpa_rnr_rank,aes(x=Var1,y=value)) + geom_boxplot(aes(fill=Var1),outlier.shape=NA) + geom_jitter(height=0) + theme_classic(base_size=16) +
 theme(legend.position="none",axis.text.x=element_text(angle=90,hjust=1)) + xlab("") + ylab("HPA Blood cell type expression rank")
-ggsave("figure3_outputs/S20c.RNRgene_HPA_expression_rank.pdf",g_rnrgene_hpa_ranks,height=6,width=12)
-knitr::include_graphics("figure3_outputs/S20c.RNRgene_HPA_expression_rank.pdf")
+ggsave("figure3_outputs/S20c.RNRgene_HPA_expression_rank.png",g_rnrgene_hpa_ranks,height=6,width=12)
+knitr::include_graphics("figure3_outputs/S20c.RNRgene_HPA_expression_rank.png")
 ```
 
-<embed src="figure3_outputs/S20c.RNRgene_HPA_expression_rank.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure3_outputs/S20c.RNRgene_HPA_expression_rank.png" width="75%" height="75%" />
 
 ``` {.r}
 dt_hpa_rnr_zscore <- data.table(t(log2(hpa_tab[unlist(lapply(strsplit(rownames(val_df_res_sig[val_df_res_sig$log2FoldChange>0,]),"\\."),"[",1)),]+1)))
@@ -585,7 +585,7 @@ df_hpa_rnr_zscore <- data.frame(dt_hpa_rnr_zscore[ , lapply(.SD, mean) , by=cell
 rownames(df_hpa_rnr_zscore) <- gsub("\\."," ",df_hpa_rnr_zscore$cell_type)
 df_hpa_rnr_zscore$cell_type <- NULL
 
-pdf("figure3_outputs/S20b.RNRgene_HPA_zscore_nobreaks.pdf",height=7,width=9)
+png("figure3_outputs/S20b.RNRgene_HPA_zscore_nobreaks.png",height=700,width=900,res=100)
 pheatmap(df_hpa_rnr_zscore[,!(colnames(df_hpa_rnr_zscore) %in% c("FDCSP","C4A","CCL21"))],color=rev(brewer.pal(n=11, name="RdBu")),fontsize_col=7,fontsize_row=7,cellheight=6,
 cellwidth=6,treeheight_row=15,treeheight_col=15)
 dev.off()
@@ -595,10 +595,10 @@ dev.off()
     ##           1
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S20b.RNRgene_HPA_zscore_nobreaks.pdf")
+knitr::include_graphics("figure3_outputs/S20b.RNRgene_HPA_zscore_nobreaks.png")
 ```
 
-<embed src="figure3_outputs/S20b.RNRgene_HPA_zscore_nobreaks.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure3_outputs/S20b.RNRgene_HPA_zscore_nobreaks.png" width="75%" height="75%" />
 
 ``` {.r}
 dt_cpb_rnr_zscore <- data.table(t(fcmeta_tab[rownames(val_df_res_sig[val_df_res_sig$log2FoldChange<0,]),]))
@@ -609,7 +609,7 @@ df_cpb_rnr_zscore <- data.frame(dt_cpb_rnr_zscore[ , lapply(.SD, mean) , by=plot
 rownames(df_cpb_rnr_zscore) <- df_cpb_rnr_zscore$plot_cluster
 df_cpb_rnr_zscore$plot_cluster <- NULL
 
-pdf("figure3_outputs/S20d.RNRgene_subtype_zscore_nobreaks.pdf",height=4,width=6)
+png("figure3_outputs/S20d.RNRgene_subtype_zscore_nobreaks.png",height=400,width=600,res=100)
 pheatmap(df_cpb_rnr_zscore,color=rev(brewer.pal(n=11, name="RdBu")),fontsize_col=8,fontsize_row=8,cellheight=8,cellwidth=8,treeheight_row=15,treeheight_col=15)
 dev.off()
 ```
@@ -618,10 +618,10 @@ dev.off()
     ##           1
 
 ``` {.r}
-knitr::include_graphics("figure3_outputs/S20d.RNRgene_subtype_zscore_nobreaks.pdf")
+knitr::include_graphics("figure3_outputs/S20d.RNRgene_subtype_zscore_nobreaks.png")
 ```
 
-<embed src="figure3_outputs/S20d.RNRgene_subtype_zscore_nobreaks.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure3_outputs/S20d.RNRgene_subtype_zscore_nobreaks.png" width="75%" height="75%" />
 
 ``` {.r}
 dt_cpb_rnr <- data.table(t(fcmeta_tab[rownames(val_df_res_sig[val_df_res_sig$log2FoldChange<0,]),]))
@@ -634,11 +634,11 @@ m_cpb_rnr_rank$Var1 <- factor(as.character(m_cpb_rnr_rank$Var1),levels=rev(as.ch
 g_rnrgene_cpb_ranks <- ggplot(m_cpb_rnr_rank,aes(x=Var1,y=value)) + geom_boxplot(aes(fill=Var1),outlier.shape=NA) + geom_jitter(height=0) + theme_classic(base_size=16) +
 theme(legend.position="none",axis.text.x=element_text(angle=90,hjust=1)) + xlab("") + ylab("Melanoma subtype expression rank") +
 scale_fill_manual(values=temp_colors[rev(as.character(arrange(data.table(m_cpb_rnr_rank)[,median(value),by=Var1],V1)$Var1))])
-ggsave("figure3_outputs/S20e.RNRgene_subtype_expression_rank.pdf",g_rnrgene_cpb_ranks,height=7,width=12)
-knitr::include_graphics("figure3_outputs/S20e.RNRgene_subtype_expression_rank.pdf")
+ggsave("figure3_outputs/S20e.RNRgene_subtype_expression_rank.png",g_rnrgene_cpb_ranks,height=7,width=12)
+knitr::include_graphics("figure3_outputs/S20e.RNRgene_subtype_expression_rank.png")
 ```
 
-<embed src="figure3_outputs/S20e.RNRgene_subtype_expression_rank.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure3_outputs/S20e.RNRgene_subtype_expression_rank.png" width="75%" height="75%" />
 
 Figure 4
 
@@ -1030,11 +1030,11 @@ half_m_tmp_cor_res_os$gene1gene2_continuous_rnr_roc_bonferroni_p <- p.adjust(hal
 
 tmp_cph <- coxph(surv ~ mean_highos_genes_z + mean_lowos_genes_z,data=clin[!is.na(clin$surv),])
 tmp_cpb_ggforest_mean_highos_z_mean_lowos_z <- ggforest(tmp_cph,data=clin[!is.na(clin$surv),],fontsize=0.9)
-ggsave("figure4_outputs/S21a.CPB_mean_highos_z_mean_lowos_z_forestplot.pdf",tmp_cpb_ggforest_mean_highos_z_mean_lowos_z,height=3,width=9)
-knitr::include_graphics("figure4_outputs/S21a.CPB_mean_highos_z_mean_lowos_z_forestplot.pdf")
+ggsave("figure4_outputs/S21a.CPB_mean_highos_z_mean_lowos_z_forestplot.png",tmp_cpb_ggforest_mean_highos_z_mean_lowos_z,height=3,width=9)
+knitr::include_graphics("figure4_outputs/S21a.CPB_mean_highos_z_mean_lowos_z_forestplot.png")
 ```
 
-<embed src="figure4_outputs/S21a.CPB_mean_highos_z_mean_lowos_z_forestplot.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S21a.CPB_mean_highos_z_mean_lowos_z_forestplot.png" width="75%" height="75%" />
 
 ``` {.r}
 mod_meanrz_meannrz <- glm(as.numeric(as.factor(clin$Response))-1 ~ clin$mean_r_genes_z + clin$mean_nr_genes_z,family=binomial(link="logit"))
@@ -1047,7 +1047,9 @@ rocobj_cpb_meanr_z_meannr_z_string <- paste0("AUC: ",formatC(rocobj_meanr_z_mean
 rocobj_cpb_meanhighos_z_meanlowos_z_string <- paste0("AUC: ",formatC(rocobj_meanhighos_z_meanlowos_z$A,digits=3,format="f"),", p-value: ",formatC(rocobj_meanhighos_z_meanlowos_z$p.value,digits=2,
 format="e"))
 
-pdf("figure4_outputs/S21b.CPB_aggregatemodels_zscores_ROC_withpvalues.pdf")
+graphics.off()
+
+png("figure4_outputs/S21b.CPB_aggregatemodels_zscores_ROC_withpvalues.png",height=700,width=700,res=100)
 pROC::plot.roc(clin$Response,mod_meanrz_meannrz$fitted.values,col="blue",title="CPB cohort response classification")
 pROC::lines.roc(clin$Response,mod_meanhighosz_meanlowosz$fitted.values,col="black")
 legend("bottomright", legend=c(paste0("mean(R genes Z-score)+mean(NR genes Z-score): ",rocobj_cpb_meanr_z_meannr_z_string),paste0("mean(high OS genes Z-score)+mean(low OS genes Z-score): ",
@@ -1055,14 +1057,14 @@ rocobj_cpb_meanhighos_z_meanlowos_z_string)), col=c("blue","black"), lwd=2,cex=0
 dev.off()
 ```
 
-    ## pdf 
-    ##   2
+    ## null device 
+    ##           1
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/S21b.CPB_aggregatemodels_zscores_ROC_withpvalues.pdf")
+knitr::include_graphics("figure4_outputs/S21b.CPB_aggregatemodels_zscores_ROC_withpvalues.png")
 ```
 
-<embed src="figure4_outputs/S21b.CPB_aggregatemodels_zscores_ROC_withpvalues.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S21b.CPB_aggregatemodels_zscores_ROC_withpvalues.png" width="75%" height="75%" />
 
 ``` {.r}
 g_cindex_roc_os <- ggplot(half_m_tmp_cor_res_os,aes(x=gene1gene2_continuous_cindex,y=gene1gene2_continuous_rnr_roc_auc)) +
@@ -1070,11 +1072,11 @@ geom_point(aes(color=model_type)) + theme_classic() + ylab("CPB Cohort R/NR ROC 
 theme(legend.position="bottom",text=element_text(size=16),legend.text=element_text(size=9),legend.title=element_text(size=9)) +
 geom_text_repel(data=half_m_tmp_cor_res_os[half_m_tmp_cor_res_os$gene1gene2_continuous_logrank_bonferroni_p<0.05&half_m_tmp_cor_res_os$gene1gene2_continuous_rnr_roc_bonferroni_p<0.05,],
 aes(label=gene_pair),size=4)
-ggsave("figure4_outputs/S21c.OSgenes_CPB_ROC_vs_Cindex.pdf",g_cindex_roc_os,height=7,width=7)
-knitr::include_graphics("figure4_outputs/S21c.OSgenes_CPB_ROC_vs_Cindex.pdf")
+ggsave("figure4_outputs/S21c.OSgenes_CPB_ROC_vs_Cindex.png",g_cindex_roc_os,height=7,width=7)
+knitr::include_graphics("figure4_outputs/S21c.OSgenes_CPB_ROC_vs_Cindex.png")
 ```
 
-<embed src="figure4_outputs/S21c.OSgenes_CPB_ROC_vs_Cindex.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S21c.OSgenes_CPB_ROC_vs_Cindex.png" width="75%" height="75%" />
 
 ``` {.r}
 g_cpb_cindex_by_model_type_os <- ggplot(half_m_tmp_cor_res_os,aes(x=model_type,y= gene1gene2_continuous_cindex)) +
@@ -1083,11 +1085,11 @@ geom_signif(comparisons=list(c("Low OS gene/Low OS gene","High OS gene/High OS g
 c("Low OS gene/Low OS gene","High OS gene/Low OS gene")), step_increase = .05) +
 theme_classic(base_size=16) + theme(legend.position="none",axis.text.x=element_text(size=rel(0.8),colour="black"),axis.text.y=element_text(colour="black")) + xlab("") +
 ylab("Primary cohort model C-index")
-ggsave("figure4_outputs/S21d.OSgene_CPB_cindex_comparison.pdf",g_cpb_cindex_by_model_type_os,height=7,width=7)
-knitr::include_graphics("figure4_outputs/S21d.OSgene_CPB_cindex_comparison.pdf")
+ggsave("figure4_outputs/S21d.OSgene_CPB_cindex_comparison.png",g_cpb_cindex_by_model_type_os,height=7,width=7)
+knitr::include_graphics("figure4_outputs/S21d.OSgene_CPB_cindex_comparison.png")
 ```
 
-<embed src="figure4_outputs/S21d.OSgene_CPB_cindex_comparison.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S21d.OSgene_CPB_cindex_comparison.png" width="75%" height="75%" />
 
 ``` {.r}
 g_cpb_auc_by_model_type_os <- ggplot(half_m_tmp_cor_res_os,aes(x=model_type,y=gene1gene2_continuous_rnr_roc_auc)) +
@@ -1096,32 +1098,32 @@ geom_signif(comparisons=list(c("Low OS gene/Low OS gene","High OS gene/High OS g
 "High OS gene/Low OS gene")), step_increase = .05) +
 theme_classic(base_size=16) + theme(legend.position="none",axis.text.x=element_text(colour="black",size=10),axis.text.y=element_text(colour="black")) +
 xlab("") + ylab("Primary cohort model ROC AUC")
-ggsave("figure4_outputs/S21e.OSgene_CPB_roc_auc_comparison.pdf",g_cpb_auc_by_model_type_os,height=7,width=7)
-knitr::include_graphics("figure4_outputs/S21e.OSgene_CPB_roc_auc_comparison.pdf")
+ggsave("figure4_outputs/S21e.OSgene_CPB_roc_auc_comparison.png",g_cpb_auc_by_model_type_os,height=7,width=7)
+knitr::include_graphics("figure4_outputs/S21e.OSgene_CPB_roc_auc_comparison.png")
 ```
 
-<embed src="figure4_outputs/S21e.OSgene_CPB_roc_auc_comparison.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S21e.OSgene_CPB_roc_auc_comparison.png" width="75%" height="75%" />
 
 ``` {.r}
 g_best_models_comparison_rnr <- ggplot(half_m_tmp_cor_res,aes(x=-1*log10(gene1gene2_continuous_logrank_p),y=-1*log10(gene1gene2_continuous_rnr_roc_p))) + geom_point(aes(color=model_type)) +
 #geom_text_repel(aes(label=model_name,color=model_type),size=2) + scale_color_manual(values=c("black","red"))
 theme_classic() + xlab("CPB Cohort -log10(Cox log-rank p)") + ylab("CPB Cohort -log10(Response AUC p)") + theme(legend.position="bottom",text=element_text(size=16)) +
 geom_vline(xintercept=-1*log10(0.05/nrow(half_m_tmp_cor_res)),color="red") + geom_hline(yintercept=-1*log10(0.05/nrow(half_m_tmp_cor_res)),color="red")
-ggsave("figure4_outputs/S21f.RNRgenes_CPB_pairwise_models.pdf",g_best_models_comparison_rnr,height=7,width=7)
-knitr::include_graphics("figure4_outputs/S21f.RNRgenes_CPB_pairwise_models.pdf")
+ggsave("figure4_outputs/S21f.RNRgenes_CPB_pairwise_models.png",g_best_models_comparison_rnr,height=7,width=7)
+knitr::include_graphics("figure4_outputs/S21f.RNRgenes_CPB_pairwise_models.png")
 ```
 
-<embed src="figure4_outputs/S21f.RNRgenes_CPB_pairwise_models.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S21f.RNRgenes_CPB_pairwise_models.png" width="75%" height="75%" />
 
 ``` {.r}
 g_cindex_roc_rnr <- ggplot(half_m_tmp_cor_res,aes(x=gene1gene2_continuous_cindex,y=gene1gene2_continuous_rnr_roc_auc)) +
 geom_point(aes(color=model_type)) + theme_classic() + ylab("CPB Cohort R/NR ROC AUC") + xlab("CPB Cohort Cox model C-index") + geom_abline(slope=1,intercept=0) +
 theme(legend.position="bottom",text=element_text(size=16),legend.text=element_text(size=9),legend.title=element_text(size=9))
-ggsave("figure4_outputs/S21g.RNRgenes_CPB_ROC_vs_Cindex.pdf",g_cindex_roc_rnr,height=7,width=7)
-knitr::include_graphics("figure4_outputs/S21g.RNRgenes_CPB_ROC_vs_Cindex.pdf")
+ggsave("figure4_outputs/S21g.RNRgenes_CPB_ROC_vs_Cindex.png",g_cindex_roc_rnr,height=7,width=7)
+knitr::include_graphics("figure4_outputs/S21g.RNRgenes_CPB_ROC_vs_Cindex.png")
 ```
 
-<embed src="figure4_outputs/S21g.RNRgenes_CPB_ROC_vs_Cindex.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S21g.RNRgenes_CPB_ROC_vs_Cindex.png" width="75%" height="75%" />
 
 ``` {.r}
 g_cpb_cindex_by_model_type_rnr <- ggplot(half_m_tmp_cor_res,aes(x=model_type,y=gene1gene2_continuous_cindex)) +
@@ -1129,11 +1131,11 @@ geom_boxplot(aes(fill=model_type),outlier.shape=NA) + geom_jitter(alpha=1/20) +
 geom_signif(comparisons = list(c("NR gene/NR gene","R gene/R gene"),c("R gene/R gene","R gene/NR gene"),c("NR gene/NR gene","R gene/NR gene")), step_increase = .05) +
 theme_classic(base_size=16) + theme(legend.position="none",axis.text.x=element_text(colour="black"),axis.text.y=element_text(colour="black")) +
 xlab("") + ylab("Primary cohort model C-index")
-ggsave("figure4_outputs/S21h.RNRgene_CPB_cindex_comparison.pdf",g_cpb_cindex_by_model_type_rnr,height=7,width=7)
-knitr::include_graphics("figure4_outputs/S21h.RNRgene_CPB_cindex_comparison.pdf")
+ggsave("figure4_outputs/S21h.RNRgene_CPB_cindex_comparison.png",g_cpb_cindex_by_model_type_rnr,height=7,width=7)
+knitr::include_graphics("figure4_outputs/S21h.RNRgene_CPB_cindex_comparison.png")
 ```
 
-<embed src="figure4_outputs/S21h.RNRgene_CPB_cindex_comparison.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S21h.RNRgene_CPB_cindex_comparison.png" width="75%" height="75%" />
 
 ``` {.r}
 g_cpb_auc_by_model_type_rnr <- ggplot(half_m_tmp_cor_res,aes(x=model_type,y=gene1gene2_continuous_rnr_roc_auc)) +
@@ -1141,11 +1143,11 @@ geom_boxplot(aes(fill=model_type),outlier.shape=NA) + geom_jitter(alpha=1/20) +
 geom_signif(comparisons = list(c("NR gene/NR gene","R gene/R gene"),c("R gene/R gene","R gene/NR gene"),c("NR gene/NR gene","R gene/NR gene")), step_increase = .05) +
 theme_classic(base_size=16) + theme(legend.position="none",axis.text.x=element_text(colour="black"),axis.text.y=element_text(colour="black")) +
 xlab("") + ylab("Primary cohort model ROC AUC")
-ggsave("figure4_outputs/S21i.RNRgene_CPB_roc_auc_comparison.pdf",g_cpb_auc_by_model_type_rnr,height=7,width=7)
-knitr::include_graphics("figure4_outputs/S21i.RNRgene_CPB_roc_auc_comparison.pdf")
+ggsave("figure4_outputs/S21i.RNRgene_CPB_roc_auc_comparison.png",g_cpb_auc_by_model_type_rnr,height=7,width=7)
+knitr::include_graphics("figure4_outputs/S21i.RNRgene_CPB_roc_auc_comparison.png")
 ```
 
-<embed src="figure4_outputs/S21i.RNRgene_CPB_roc_auc_comparison.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S21i.RNRgene_CPB_roc_auc_comparison.png" width="75%" height="75%" />
 
 ``` {.r}
 col_rbp <- c("#D55E00","#0072B2", "#CC79A7")
@@ -1160,22 +1162,22 @@ geom_vline(xintercept=-1*log10(0.05/nrow(half_m_tmp_cor_res_os)),color="black",l
 geom_hline(yintercept=-1*log10(0.05/nrow(half_m_tmp_cor_res_os)),color="black",linetype="dashed") +
 geom_text_repel(data=half_m_tmp_cor_res_os[half_m_tmp_cor_res_os$gene1gene2_continuous_logrank_bonferroni_p<0.05&half_m_tmp_cor_res_os$gene1gene2_continuous_rnr_roc_bonferroni_p<0.05,],
 aes(label=gene_pair_name),size=5,min.segment.length=unit(0, "lines"),force=2) + scale_color_manual(values=col_rbp,name="Gene pair")
-ggsave("figure4_outputs/4a.OSgenes_CPB_pairwise_models_withsiglabels_big.pdf",g_best_models_comparison_os_withsiglabels_big,height=7,width=7)
-knitr::include_graphics("figure4_outputs/4a.OSgenes_CPB_pairwise_models_withsiglabels_big.pdf")
+ggsave("figure4_outputs/4a.OSgenes_CPB_pairwise_models_withsiglabels_big.png",g_best_models_comparison_os_withsiglabels_big,height=7,width=7)
+knitr::include_graphics("figure4_outputs/4a.OSgenes_CPB_pairwise_models_withsiglabels_big.png")
 ```
 
-<embed src="figure4_outputs/4a.OSgenes_CPB_pairwise_models_withsiglabels_big.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/4a.OSgenes_CPB_pairwise_models_withsiglabels_big.png" width="75%" height="75%" />
 
 ``` {.r}
 clin$log10_tmb <- log10(clin$nonsilent_snpdnpindel)
 
 tmp_cph <- coxph(surv ~ MAP4K1 + AGER + log10_tmb,data=clin[!is.na(clin$surv)&!is.na(clin$log10_tmb),])
 tmp_ggforest_MAP4K1_AGER_log10tmb <- ggforest(tmp_cph,data=clin[!is.na(clin$surv)&!is.na(clin$log10_tmb),],fontsize=0.9)
-ggsave("figure4_outputs/S22a.i.CPB_MAP4K1_AGER_log10tmb_forestplot.pdf", tmp_ggforest_MAP4K1_AGER_log10tmb,height=3,width=7)
-knitr::include_graphics("figure4_outputs/S22a.i.CPB_MAP4K1_AGER_log10tmb_forestplot.pdf")
+ggsave("figure4_outputs/S22a.i.CPB_MAP4K1_AGER_log10tmb_forestplot.png", tmp_ggforest_MAP4K1_AGER_log10tmb,height=3,width=7)
+knitr::include_graphics("figure4_outputs/S22a.i.CPB_MAP4K1_AGER_log10tmb_forestplot.png")
 ```
 
-<embed src="figure4_outputs/S22a.i.CPB_MAP4K1_AGER_log10tmb_forestplot.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S22a.i.CPB_MAP4K1_AGER_log10tmb_forestplot.png" width="75%" height="75%" />
 
 ``` {.r}
 tmp_cph2 <- coxph(surv ~ MAP4K1 + AGER,data=clin[!is.na(clin$surv)&!is.na(clin$log10_tmb),])
@@ -1229,7 +1231,7 @@ rnr_map4k1_ager_plustmb <- roc.test(roc(as.numeric(as.factor(clin[!is.na(clin$lo
 roc(as.numeric(as.factor(clin[!is.na(clin$log10_tmb),]$Response))-1,rev_rocobj_cpb_glm_MAP4K1AGERlog10tmb$fitted.values))$p.value
 
 
-pdf("figure4_outputs/S22a.ii.MAP4K1_AGER_log10tmb_ROC.pdf")
+png("figure4_outputs/S22a.ii.MAP4K1_AGER_log10tmb_ROC.png",height=700,width=700,res=100)
 pROC::plot.roc(clin[!is.na(clin$log10_tmb),]$Response,rev_rocobj_cpb_glm_MAP4K1AGER$fitted.values,col="blue")
 pROC::lines.roc(clin[!is.na(clin$log10_tmb),]$Response,rev_rocobj_cpb_glm_MAP4K1AGERlog10tmb$fitted.values,col="red")
 legend("bottomright", legend=c(paste0("MAP4K1+AGER ",rev_rocobj_cpb_MAP4K1AGER_string),paste0("MAP4K1+AGER+log10(TMB) ",rev_rocobj_cpb_MAP4K1AGERlog10tmb_string)),col=c("blue","red"),lwd=2,cex=0.71)
@@ -1240,19 +1242,19 @@ dev.off()
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/S22a.ii.MAP4K1_AGER_log10tmb_ROC.pdf")
+knitr::include_graphics("figure4_outputs/S22a.ii.MAP4K1_AGER_log10tmb_ROC.png")
 ```
 
-<embed src="figure4_outputs/S22a.ii.MAP4K1_AGER_log10tmb_ROC.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S22a.ii.MAP4K1_AGER_log10tmb_ROC.png" width="75%" height="75%" />
 
 ``` {.r}
 tmp_cph <- coxph(surv ~ MAP4K1 + TBX3 + log10_tmb,data=clin[!is.na(clin$surv)&!is.na(clin$log10_tmb),])
 tmp_ggforest_MAP4K1_TBX3_log10tmb <- ggforest(tmp_cph,data=clin[!is.na(clin$surv)&!is.na(clin$log10_tmb),],fontsize=0.9)
-ggsave("figure4_outputs/S22b.i.MAP4K1_TBX3_log10tmb_forestplot.pdf", tmp_ggforest_MAP4K1_TBX3_log10tmb,height=3,width=7)
-knitr::include_graphics("figure4_outputs/S22b.i.MAP4K1_TBX3_log10tmb_forestplot.pdf")
+ggsave("figure4_outputs/S22b.i.MAP4K1_TBX3_log10tmb_forestplot.png", tmp_ggforest_MAP4K1_TBX3_log10tmb,height=3,width=7)
+knitr::include_graphics("figure4_outputs/S22b.i.MAP4K1_TBX3_log10tmb_forestplot.png")
 ```
 
-<embed src="figure4_outputs/S22b.i.MAP4K1_TBX3_log10tmb_forestplot.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S22b.i.MAP4K1_TBX3_log10tmb_forestplot.png" width="75%" height="75%" />
 
 ``` {.r}
 tmp_cph2 <- coxph(surv ~ MAP4K1 + TBX3,data=clin[!is.na(clin$surv)&!is.na(clin$log10_tmb),])
@@ -1307,7 +1309,7 @@ rnr_map4k1_tbx3_plustmb <- roc.test(roc(as.numeric(as.factor(clin[!is.na(clin$lo
 roc(as.numeric(as.factor(clin[!is.na(clin$log10_tmb),]$Response))-1,rev_rocobj_cpb_glm_MAP4K1TBX3log10tmb$fitted.values))$p.value
 
 
-pdf("figure4_outputs/S22b.ii.MAP4K1_TBX3_log10tmb_ROC.pdf")
+png("figure4_outputs/S22b.ii.MAP4K1_TBX3_log10tmb_ROC.png",height=700,width=700,res=100)
 pROC::plot.roc(clin[!is.na(clin$log10_tmb),]$Response,rev_rocobj_cpb_glm_MAP4K1TBX3$fitted.values,col="blue")
 pROC::lines.roc(clin[!is.na(clin$log10_tmb),]$Response,rev_rocobj_cpb_glm_MAP4K1TBX3log10tmb$fitted.values,col="red")
 legend("bottomright", legend=c(paste0("MAP4K1+TBX3 ",rev_rocobj_cpb_MAP4K1TBX3_string),paste0("MAP4K1+TBX3+log10(TMB) ",rev_rocobj_cpb_MAP4K1TBX3log10tmb_string)),col=c("blue","red"),lwd=2,cex=0.71)
@@ -1318,19 +1320,19 @@ dev.off()
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/S22b.ii.MAP4K1_TBX3_log10tmb_ROC.pdf")
+knitr::include_graphics("figure4_outputs/S22b.ii.MAP4K1_TBX3_log10tmb_ROC.png")
 ```
 
-<embed src="figure4_outputs/S22b.ii.MAP4K1_TBX3_log10tmb_ROC.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S22b.ii.MAP4K1_TBX3_log10tmb_ROC.png" width="75%" height="75%" />
 
 ``` {.r}
 tmp_cph <- coxph(surv ~ mean_highos_genes_z + mean_lowos_genes_z + log10_tmb,data=clin[!is.na(clin$surv)&!is.na(clin$log10_tmb),])
 tmp_ggforest_highos_lowos_log10tmb <- ggforest(tmp_cph,data=clin[!is.na(clin$surv)&!is.na(clin$log10_tmb),],fontsize=0.9)
-ggsave("figure4_outputs/S22c.i.highos_lowos_log10tmb_forestplot.pdf", tmp_ggforest_highos_lowos_log10tmb,height=3,width=7)
-knitr::include_graphics("figure4_outputs/S22c.i.highos_lowos_log10tmb_forestplot.pdf")
+ggsave("figure4_outputs/S22c.i.highos_lowos_log10tmb_forestplot.png", tmp_ggforest_highos_lowos_log10tmb,height=3,width=7)
+knitr::include_graphics("figure4_outputs/S22c.i.highos_lowos_log10tmb_forestplot.png")
 ```
 
-<embed src="figure4_outputs/S22c.i.highos_lowos_log10tmb_forestplot.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S22c.i.highos_lowos_log10tmb_forestplot.png" width="75%" height="75%" />
 
 ``` {.r}
 tmp_cph2 <- coxph(surv ~ mean_highos_genes_z + mean_lowos_genes_z,data=clin[!is.na(clin$surv)&!is.na(clin$log10_tmb),])
@@ -1381,7 +1383,7 @@ roc(as.numeric(as.factor(clin[!is.na(clin$log10_tmb),]$Response))-1,rev_rocobj_c
 rnr_meanhighos_meanlowos_plustmb <- roc.test(roc(as.numeric(as.factor(clin[!is.na(clin$log10_tmb),]$Response))-1,rev_rocobj_cpb_glm_highoslowos$fitted.values),
 roc(as.numeric(as.factor(clin[!is.na(clin$log10_tmb),]$Response))-1,rev_rocobj_cpb_glm_highoslowoslog10tmb$fitted.values))$p.value
 
-pdf("figure4_outputs/S22c.ii.highos_lowos_log10tmb_ROC.pdf")
+png("figure4_outputs/S22c.ii.highos_lowos_log10tmb_ROC.png",height=700,width=700,res=100)
 pROC::plot.roc(clin[!is.na(clin$log10_tmb),]$Response,rev_rocobj_cpb_glm_highoslowos$fitted.values,col="blue")
 pROC::lines.roc(clin[!is.na(clin$log10_tmb),]$Response,rev_rocobj_cpb_glm_highoslowoslog10tmb$fitted.values,col="red")
 legend("bottomright", legend=c(paste0("Long OS metagene + Short OS metagene + ",rev_rocobj_cpb_highoslowos_string),paste0("MAP4K1+AGER+log10(TMB) ",rev_rocobj_cpb_highoslowoslog10tmb_string)),
@@ -1393,10 +1395,10 @@ dev.off()
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/S22c.ii.highos_lowos_log10tmb_ROC.pdf")
+knitr::include_graphics("figure4_outputs/S22c.ii.highos_lowos_log10tmb_ROC.png")
 ```
 
-<embed src="figure4_outputs/S22c.ii.highos_lowos_log10tmb_ROC.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S22c.ii.highos_lowos_log10tmb_ROC.png" width="75%" height="75%" />
 
 ``` {.r}
 df_tmb_pvals <- data.frame(model=c("MAP4K1&AGER","MAP4K1&TBX3","Long OS metagene & Short OS metagene"),os_pval=c(os_map4k1_ager_plustmb,os_map4k1_tbx3_plustmb,os_meanhighos_meanlowos_plustmb),
@@ -1404,7 +1406,7 @@ rnr_pval=c(rnr_map4k1_ager_plustmb,rnr_map4k1_tbx3_plustmb,rnr_meanhighos_meanlo
 df_tmb_pvals$os_pval <- formatC(df_tmb_pvals$os_pval,width=2,digits=2,format="e")
 df_tmb_pvals$rnr_pval <- formatC(df_tmb_pvals$rnr_pval,width=2,digits=2,format="e")
 colnames(df_tmb_pvals) <- c("model","Likelihood Ratio Test p value\nfor OS model with\n vs. without log10(TMB)","DeLong's Test p value\nfor Response model with\nvs. without log10(TMB)")
-pdf("figure4_outputs/S22d.models_with_vs_without_TMB.pdf",height=7,width=8)
+png("figure4_outputs/S22d.models_with_vs_without_TMB.png",height=700,width=800,res=100)
 grid.table(df_tmb_pvals, rows=NULL)
 dev.off()
 ```
@@ -1413,10 +1415,10 @@ dev.off()
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/S22d.models_with_vs_without_TMB.pdf")
+knitr::include_graphics("figure4_outputs/S22d.models_with_vs_without_TMB.png")
 ```
 
-<embed src="figure4_outputs/S22d.models_with_vs_without_TMB.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S22d.models_with_vs_without_TMB.png" width="75%" height="75%" />
 
 ``` {.r}
 m_hpa_map4k1 <- reshape2::melt(hpa_tab[strsplit(rownames(val_df_res_os_sig[val_df_res_os_sig$gene=="MAP4K1",]),"\\.")[[1]][1],])
@@ -1425,11 +1427,11 @@ dt_m_hpa_map4k1 <- data.table(m_hpa_map4k1)
 m_hpa_map4k1$cell_type <- factor(as.character(m_hpa_map4k1$cell_type),levels=rev(arrange(dt_m_hpa_map4k1[,median(value),by=cell_type],V1)$cell_type))
 g_hpa_map4k1 <- ggplot(m_hpa_map4k1,aes(x=cell_type,y=log2(value+1))) + geom_boxplot(aes(fill=cell_type),outlier.shape=NA) + geom_jitter() + theme_classic(base_size=16) +
 theme(legend.position="none",axis.text.x=element_text(angle=90,hjust=0.95)) + ylab("log2(MAP4K1 TPM + 1)")
-ggsave("figure4_outputs/S23a.HPA_MAP4K1.pdf",g_hpa_map4k1,height=7,width=12)
-knitr::include_graphics("figure4_outputs/S23a.HPA_MAP4K1.pdf")
+ggsave("figure4_outputs/S23a.HPA_MAP4K1.png",g_hpa_map4k1,height=7,width=12)
+knitr::include_graphics("figure4_outputs/S23a.HPA_MAP4K1.png")
 ```
 
-<embed src="figure4_outputs/S23a.HPA_MAP4K1.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S23a.HPA_MAP4K1.png" width="75%" height="75%" />
 
 ``` {.r}
 cbpalette_reordered <- c("#E69F00","#999999","#56B4E9","#009E73","#F0E442")
@@ -1438,34 +1440,33 @@ kt <- kruskal.test(clin$TBX3,clin$plot_cluster)
 kt_p <- formatC(kt$p.value,digits=3,format="e")
 g_TBX3_nmf <- ggplot(clin,aes(x=plot_cluster,y=TBX3)) + geom_boxplot(aes(fill=plot_cluster),outlier.shape = NA) + geom_jitter() + theme_classic() + ylab("TBX3") +
 scale_fill_manual(values=cbpalette_reordered) + ggtitle(paste0("Kruskal-Wallis p =",kt_p)) + xlab("") + theme(legend.position="none")
-ggsave("figure4_outputs/S23b.cpb_nmf_cluster_TBX3.pdf",g_TBX3_nmf)
-knitr::include_graphics("figure4_outputs/S23b.cpb_nmf_cluster_TBX3.pdf")
+ggsave("figure4_outputs/S23b.cpb_nmf_cluster_TBX3.png",g_TBX3_nmf)
+knitr::include_graphics("figure4_outputs/S23b.cpb_nmf_cluster_TBX3.png")
 ```
 
-<embed src="figure4_outputs/S23b.cpb_nmf_cluster_TBX3.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S23b.cpb_nmf_cluster_TBX3.png" width="75%" height="75%" />
 
 ``` {.r}
 kt <- kruskal.test(clin$AGER,clin$plot_cluster)
 kt_p <- formatC(kt$p.value,digits=3,format="e")
 g_AGER_nmf <- ggplot(clin,aes(x=plot_cluster,y=AGER)) + geom_boxplot(aes(fill=plot_cluster),outlier.shape = NA) + geom_jitter() + theme_classic() + ylab("AGER") +
 scale_fill_manual(values=cbpalette_reordered) + ggtitle(paste0("Kruskal-Wallis p =",kt_p)) + xlab("") + theme(legend.position="none")
-ggsave("figure4_outputs/S23c.cpb_nmf_cluster_AGER.pdf",g_AGER_nmf)
-knitr::include_graphics("figure4_outputs/S23c.cpb_nmf_cluster_AGER.pdf")
+ggsave("figure4_outputs/S23c.cpb_nmf_cluster_AGER.png",g_AGER_nmf)
+knitr::include_graphics("figure4_outputs/S23c.cpb_nmf_cluster_AGER.png")
 ```
 
-<embed src="figure4_outputs/S23c.cpb_nmf_cluster_AGER.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S23c.cpb_nmf_cluster_AGER.png" width="75%" height="75%" />
 
 ``` {.r}
 kt <- kruskal.test(clin$mean_lowos_genes_z,clin$plot_cluster)
 kt_p <- formatC(kt$p.value,digits=3,format="e")
 g_lowosgenes_z_nmf <- ggplot(clin,aes(x=plot_cluster,y=mean_lowos_genes_z)) + geom_boxplot(aes(fill=plot_cluster),outlier.shape = NA) + geom_jitter() + theme_classic() +
 ylab("Mean Low OS genes Z-score") + scale_fill_manual(values=cbpalette_reordered) + ggtitle(paste0("Kruskal-Wallis p =",kt_p)) + xlab("") + theme(legend.position="none")
-ggsave("figure4_outputs/S23d.cpb_nmf_cluster_lowosmetagene.pdf",g_lowosgenes_z_nmf)
-knitr::include_graphics("figure4_outputs/S23d.cpb_nmf_cluster_lowosmetagene.pdf")
+ggsave("figure4_outputs/S23d.cpb_nmf_cluster_lowosmetagene.png",g_lowosgenes_z_nmf)
+knitr::include_graphics("figure4_outputs/S23d.cpb_nmf_cluster_lowosmetagene.png")
 ```
 
-<embed src="figure4_outputs/S23d.cpb_nmf_cluster_lowosmetagene.pdf" width="600px" height="600px" type="application/pdf" />
-
+<img src="figure4_outputs/S23d.cpb_nmf_cluster_lowosmetagene.png" width="75%" height="75%" />
 
 ``` {.r}
 clin$log10_rna_tcb <- log10(clin$rna_tcb)
@@ -1504,28 +1505,30 @@ cluster_rows=TRUE,cluster_cols=TRUE,clustering_distance_rows="correlation",fonts
 breaks=tmp_rawdata_breaks,color=rev(brewer.pal(n = 9, name = "RdBu")),treeheight_row=10,treeheight_col=10,annotation_colors=raw_heatmap_annotation_colors,
 legend_breaks=c(-4,-3,-2,-1,0,1,2,3,4))
 
-save_pheatmap_pdf <- function(x, filename, width=10, height=7) {
-   pdf(filename, width=width, height=height)
+
+save_pheatmap_png <- function(x, filename, width=900, height=600,res=100) {
+   png(filename, width=width, height=height,res=res)
    grid::grid.newpage()
    grid::grid.draw(x$gtable)
    dev.off()
 }
-save_pheatmap_pdf(main_heatmap, "figure4_outputs/4b.OSgenes_rawdata_heatmap_clustered_9col.pdf")
+
+save_pheatmap_png(main_heatmap, "figure4_outputs/4b.OSgenes_rawdata_heatmap_clustered_9col.png",width=2100,height=1500,res=200)
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/4b.OSgenes_rawdata_heatmap_clustered_9col.pdf")
+knitr::include_graphics("figure4_outputs/4b.OSgenes_rawdata_heatmap_clustered_9col.png")
 ```
 
-<embed src="figure4_outputs/4b.OSgenes_rawdata_heatmap_clustered_9col.pdf" width="700px" height="700px" type="application/pdf" />
+<img src="figure4_outputs/4b.OSgenes_rawdata_heatmap_clustered_9col.png" width="100%" height="100%" />
 
 Functions
 
 ``` {.r}
-make_os_p_cindex_plot <- function(clin,pdf_string) {
+make_os_p_cindex_plot <- function(clin,png_string) {
 cph_cohort_MAP4K1TBX3_p <- summary(coxph(surv ~ MAP4K1 + TBX3,data=clin))$sctest[3]
 cph_cohort_MAP4K1TBX3_cindex <- summary(coxph(surv ~ MAP4K1 + TBX3,data=clin))$concordance[1]
 
@@ -1561,11 +1564,11 @@ df_model_comparison_cohort$X2 <- as.numeric(df_model_comparison_cohort$X2)
 df_model_comparison_cohort$X3 <- as.numeric(df_model_comparison_cohort$X3)
 g_survmodel_compare_cohort_withBF3models <- ggplot(df_model_comparison_cohort,aes(x=as.numeric(X3),y=-1*log10(as.numeric(X2)))) + geom_point(aes(color=grepl("\\+",as.character(X1))),size=2) + geom_text_repel(aes(label=X1),size=6) + theme_classic(base_size=16) + geom_hline(yintercept = -1*log10(0.05),linetype = "dashed") + xlab("Cox model C-index") + ylab("-log10(Cox model Log-Rank p-value)") + scale_color_manual(values=c("black","red")) + theme(legend.position = "none")
 
-ggsave(pdf_string, g_survmodel_compare_cohort_withBF3models,height=7,width=7)
+ggsave(png_string, g_survmodel_compare_cohort_withBF3models,height=7,width=7)
 return(df_model_comparison_cohort)
 }
 
-make_pfs_p_cindex_plot <- function(clin,pdf_string) {
+make_pfs_p_cindex_plot <- function(clin,png_string) {
 p_cph_cohort_MAP4K1TBX3_p <- summary(coxph(pfs_surv ~ MAP4K1 + TBX3,data=clin))$sctest[3]
 p_cph_cohort_MAP4K1TBX3_cindex <- summary(coxph(pfs_surv ~ MAP4K1 + TBX3,data=clin))$concordance[1]
 
@@ -1598,12 +1601,12 @@ df_model_comparison_cohort_pfs$X1 <- factor(df_model_comparison_cohort_pfs$X1,le
 df_model_comparison_cohort_pfs$X2 <- as.numeric(df_model_comparison_cohort_pfs$X2)
 df_model_comparison_cohort_pfs$X3 <- as.numeric(df_model_comparison_cohort_pfs$X3)
 g_survmodel_compare_cohort_pfs_withBF3models <- ggplot(df_model_comparison_cohort_pfs,aes(x=as.numeric(X3),y=-1*log10(as.numeric(X2)))) + geom_point(aes(color=grepl("\\+",as.character(X1))),size=2) + geom_text_repel(aes(label=X1),size=6) + theme_classic(base_size=16) + geom_hline(yintercept = -1*log10(0.05),linetype = "dashed") + xlab("Cox model C-index") + ylab("-log10(Cox model Log-Rank p-value)") + scale_color_manual(values=c("black","red")) + theme(legend.position = "none")
-ggsave(pdf_string, g_survmodel_compare_cohort_pfs_withBF3models,height=7,width=7)
+ggsave(png_string, g_survmodel_compare_cohort_pfs_withBF3models,height=7,width=7)
 
 return(df_model_comparison_cohort_pfs)
 }
 
-make_rnr_p_auc_plot <- function(clin,pdf_string_1,pdf_string_2) {
+make_rnr_p_auc_plot <- function(clin,png_string_1,png_string_2) {
 rocobj_cohort_CD274 <- roc.area(as.numeric(as.factor(clin$Response))-1,clin$CD274)
 rocobj_cohort_CD274_p <- formatC(rocobj_cohort_CD274$p.value,digits=3,format="f")
 rocobj_cohort_CD274_auc <- formatC(rocobj_cohort_CD274$A,digits=3,format="f")
@@ -1657,7 +1660,7 @@ rocobj_cohort_highosgeneszlowosgenesz_string <- paste0("AUC: ",formatC(rocobj_co
 #col_set3_10 <- brewer.pal(n = 10, name = "Set3")
 col_set3_11 <- brewer.pal(n = 11, name = "Set3")
 
-pdf(pdf_string_1)
+png(png_string_1,height=700,width=700,res=100)
 pROC::plot.roc(clin$Response,clin$CD274,col=col_set3_11[1],title="cohort response classification")
 pROC::lines.roc(clin$Response,clin$CYT,col=col_set3_11[2])
 pROC::lines.roc(clin$Response,clin$GEP,col=col_set3_11[3])
@@ -1678,7 +1681,7 @@ df_model_comparison_cohort_rnr$X2 <- as.numeric(df_model_comparison_cohort_rnr$X
 df_model_comparison_cohort_rnr$X3 <- as.numeric(df_model_comparison_cohort_rnr$X3)
 
 g_rnr_compare_cohort_withBF3models <- ggplot(df_model_comparison_cohort_rnr,aes(x=as.numeric(X3),y=-1*log10(as.numeric(X2)))) + geom_point(aes(color=grepl("\\+",as.character(X1))),size=2) + geom_text_repel(aes(label=X1),size=6) + theme_classic(base_size=16) + geom_hline(yintercept = -1*log10(0.05),linetype = "dashed") + xlab("R/NR classification AUC") + ylab("-log10(R/NR classification AUC p-value)") + scale_color_manual(values=c("black","red")) + theme(legend.position = "none")
-ggsave(pdf_string_2, g_rnr_compare_cohort_withBF3models,height=7,width=7)
+ggsave(png_string_2, g_rnr_compare_cohort_withBF3models,height=7,width=7)
 return(df_model_comparison_cohort_rnr)
 }
 ```
@@ -1698,14 +1701,14 @@ skcm_clin$mean_highos_genes_z <- rowMeans(skcm_clin[,paste0(val_df_res_os_sig[va
 clin$pfs_surv <- Surv(clin$PFS,event=clin$progression_status=="Yes")
 skcm_clin$pfs_surv <- Surv(skcm_clin$PFS,event=skcm_clin$progression_status=="Yes")
 
-df_model_comparison_cpb <- make_os_p_cindex_plot(clin,"figure4_outputs/S23e.cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models.pdf")
-knitr::include_graphics("figure4_outputs/S23e.cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models.pdf")
+df_model_comparison_cpb <- make_os_p_cindex_plot(clin,"figure4_outputs/S23e.cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models.png")
+knitr::include_graphics("figure4_outputs/S23e.cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models.png")
 ```
 
-<embed src="figure4_outputs/S23e.cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S23e.cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models.png" width="75%" height="75%" />
 
 ``` {.r}
-df_model_comparison_cpb_pfs <- make_pfs_p_cindex_plot(clin,"figure4_outputs/cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models_PFS.pdf")
+df_model_comparison_cpb_pfs <- make_pfs_p_cindex_plot(clin,"figure4_outputs/cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models_PFS.png")
 ```
 
     ##                            X1           X2        X3
@@ -1722,23 +1725,23 @@ df_model_comparison_cpb_pfs <- make_pfs_p_cindex_plot(clin,"figure4_outputs/cpb_
     ## 11 High OS genes+Low OS genes 0.0006413309 0.6302151
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models_PFS.pdf")
+knitr::include_graphics("figure4_outputs/cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models_PFS.png")
 ```
 
-<embed src="figure4_outputs/cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models_PFS.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models_PFS.png" width="75%" height="75%" />
 
 ``` {.r}
-df_model_comparison_cpb_rnr <- make_rnr_p_auc_plot(clin,"figure4_outputs/S23g.cpb_rna_ROC_withpvalues_withBF3models.pdf","figure4_outputs/S23f.cpb_rna_RNR_pvalueAUC_withBF3models.pdf")
-knitr::include_graphics("figure4_outputs/S23f.cpb_rna_RNR_pvalueAUC_withBF3models.pdf")
+df_model_comparison_cpb_rnr <- make_rnr_p_auc_plot(clin,"figure4_outputs/S23g.cpb_rna_ROC_withpvalues_withBF3models.png","figure4_outputs/S23f.cpb_rna_RNR_pvalueAUC_withBF3models.png")
+knitr::include_graphics("figure4_outputs/S23f.cpb_rna_RNR_pvalueAUC_withBF3models.png")
 ```
 
-<embed src="figure4_outputs/S23f.cpb_rna_RNR_pvalueAUC_withBF3models.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S23f.cpb_rna_RNR_pvalueAUC_withBF3models.png" width="75%" height="75%" />
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/S23g.cpb_rna_ROC_withpvalues_withBF3models.pdf")
+knitr::include_graphics("figure4_outputs/S23g.cpb_rna_ROC_withpvalues_withBF3models.png")
 ```
 
-<embed src="figure4_outputs/S23g.cpb_rna_ROC_withpvalues_withBF3models.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S23g.cpb_rna_ROC_withpvalues_withBF3models.png" width="75%" height="75%" />
 
 ``` {.r}
 print(df_model_comparison_cpb_pfs)
@@ -1773,31 +1776,31 @@ geom_point(aes(color=grepl("\\+",as.character(X1))),size=2) + geom_text_repel(ae
 geom_hline(yintercept = -1*log10(0.05),linetype = "dashed") + geom_vline(xintercept = -1*log10(0.05),linetype = "dashed") +
 xlab("-log10(OS Cox model Log-Rank p-value)") + ylab("-log10(R/NR classification AUC p-value)") + 
 scale_color_manual(values=c("black","red")) + theme(legend.position = "none")
-ggsave("figure4_outputs/4c.cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models_pvals.pdf", g_survmodelrnrmodel_compare_cpb_withBF3models_pvals,height=7,width=7)
-knitr::include_graphics("figure4_outputs/4c.cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models_pvals.pdf")
+ggsave("figure4_outputs/4c.cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models_pvals.png", g_survmodelrnrmodel_compare_cpb_withBF3models_pvals,height=7,width=7)
+knitr::include_graphics("figure4_outputs/4c.cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models_pvals.png")
 ```
 
-<embed src="figure4_outputs/4c.cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models_pvals.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/4c.cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models_pvals.png" width="75%" height="75%" />
 
 ``` {.r}
 g_survmodelrnrmodel_compare_cpb_withBF3models_effectsize <- ggplot(df_model_comparison_cpb_survmodelrnrmodel,aes(x=as.numeric(X3),y=as.numeric(X5))) + 
 geom_point(aes(color=grepl("\\+",as.character(X1))),size=2) + geom_text_repel(aes(label=X1),size=6) + theme_classic(base_size=16) + xlab("OS Cox model C-index") + ylab("R/NR classification AUC") + 
 scale_color_manual(values=c("black","red")) + theme(legend.position = "none")
-ggsave("figure4_outputs/4d.cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models_effectsize.pdf", g_survmodelrnrmodel_compare_cpb_withBF3models_effectsize,height=7,width=7)
-knitr::include_graphics("figure4_outputs/4d.cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models_effectsize.pdf")
+ggsave("figure4_outputs/4d.cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models_effectsize.png", g_survmodelrnrmodel_compare_cpb_withBF3models_effectsize,height=7,width=7)
+knitr::include_graphics("figure4_outputs/4d.cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models_effectsize.png")
 ```
 
-<embed src="figure4_outputs/4d.cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models_effectsize.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/4d.cpb_rna_survival_coxcontinuous_pvaluecindex_withBF3models_effectsize.png" width="75%" height="75%" />
 
 ``` {.r}
-df_model_comparison_val <- make_os_p_cindex_plot(skcm_clin,"figure4_outputs/S26b.val_rna_survival_coxcontinuous_pvaluecindex_withBF3models.pdf")
-knitr::include_graphics("figure4_outputs/S26b.val_rna_survival_coxcontinuous_pvaluecindex_withBF3models.pdf")
+df_model_comparison_val <- make_os_p_cindex_plot(skcm_clin,"figure4_outputs/S26b.val_rna_survival_coxcontinuous_pvaluecindex_withBF3models.png")
+knitr::include_graphics("figure4_outputs/S26b.val_rna_survival_coxcontinuous_pvaluecindex_withBF3models.png")
 ```
 
-<embed src="figure4_outputs/S26b.val_rna_survival_coxcontinuous_pvaluecindex_withBF3models.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S26b.val_rna_survival_coxcontinuous_pvaluecindex_withBF3models.png" width="75%" height="75%" />
 
 ``` {.r}
-df_model_comparison_val_pfs <- make_pfs_p_cindex_plot(skcm_clin,"figure4_outputs/val_rna_survival_coxcontinuous_pvaluecindex_PFS_withBF3models.pdf")
+df_model_comparison_val_pfs <- make_pfs_p_cindex_plot(skcm_clin,"figure4_outputs/val_rna_survival_coxcontinuous_pvaluecindex_PFS_withBF3models.png")
 ```
 
     ##                            X1           X2        X3
@@ -1814,23 +1817,23 @@ df_model_comparison_val_pfs <- make_pfs_p_cindex_plot(skcm_clin,"figure4_outputs
     ## 11 High OS genes+Low OS genes 0.0014684244 0.6048795
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/val_rna_survival_coxcontinuous_pvaluecindex_PFS_withBF3models.pdf")
+knitr::include_graphics("figure4_outputs/val_rna_survival_coxcontinuous_pvaluecindex_PFS_withBF3models.png")
 ```
 
-<embed src="figure4_outputs/val_rna_survival_coxcontinuous_pvaluecindex_PFS_withBF3models.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/val_rna_survival_coxcontinuous_pvaluecindex_PFS_withBF3models.png" width="75%" height="75%" />
 
 ``` {.r}
-df_model_comparison_val_rnr <- make_rnr_p_auc_plot(skcm_clin,"figure4_outputs/S26d.val_rna_ROC_withpvalues_withBF3models.pdf","figure4_outputs/S26c.val_rna_RNR_pvalueAUC_withBF3models.pdf")
-knitr::include_graphics("figure4_outputs/S26c.val_rna_RNR_pvalueAUC_withBF3models.pdf")
+df_model_comparison_val_rnr <- make_rnr_p_auc_plot(skcm_clin,"figure4_outputs/S26d.val_rna_ROC_withpvalues_withBF3models.png","figure4_outputs/S26c.val_rna_RNR_pvalueAUC_withBF3models.png")
+knitr::include_graphics("figure4_outputs/S26c.val_rna_RNR_pvalueAUC_withBF3models.png")
 ```
 
-<embed src="figure4_outputs/S26c.val_rna_RNR_pvalueAUC_withBF3models.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S26c.val_rna_RNR_pvalueAUC_withBF3models.png" width="75%" height="75%" />
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/S26d.val_rna_ROC_withpvalues_withBF3models.pdf")
+knitr::include_graphics("figure4_outputs/S26d.val_rna_ROC_withpvalues_withBF3models.png")
 ```
 
-<embed src="figure4_outputs/S26d.val_rna_ROC_withpvalues_withBF3models.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S26d.val_rna_ROC_withpvalues_withBF3models.png" width="75%" height="75%" />
 
 ``` {.r}
 print(df_model_comparison_val_pfs)
@@ -1865,21 +1868,21 @@ geom_point(aes(color=grepl("\\+",as.character(X1))),size=2) + geom_text_repel(ae
 geom_hline(yintercept = -1*log10(0.05),linetype = "dashed") + geom_vline(xintercept = -1*log10(0.05),linetype = "dashed") +
 xlab("-log10(OS Cox model Log-Rank p-value)") + ylab("-log10(R/NR classification AUC p-value)") + 
 scale_color_manual(values=c("black","red")) + theme(legend.position = "none")
-ggsave("figure4_outputs/4g.val_rna_survival_coxcontinuous_pvaluecindex_withBF3models_pvals.pdf", g_survmodelrnrmodel_compare_val_withBF3models_pvals,height=7,width=7)
-knitr::include_graphics("figure4_outputs/4g.val_rna_survival_coxcontinuous_pvaluecindex_withBF3models_pvals.pdf")
+ggsave("figure4_outputs/4g.val_rna_survival_coxcontinuous_pvaluecindex_withBF3models_pvals.png", g_survmodelrnrmodel_compare_val_withBF3models_pvals,height=7,width=7)
+knitr::include_graphics("figure4_outputs/4g.val_rna_survival_coxcontinuous_pvaluecindex_withBF3models_pvals.png")
 ```
 
-<embed src="figure4_outputs/4g.val_rna_survival_coxcontinuous_pvaluecindex_withBF3models_pvals.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/4g.val_rna_survival_coxcontinuous_pvaluecindex_withBF3models_pvals.png" width="75%" height="75%" />
 
 ``` {.r}
 g_survmodelrnrmodel_compare_val_withBF3models_effectsize <- ggplot(df_model_comparison_val_survmodelrnrmodel,aes(x=as.numeric(X3),y=as.numeric(X5))) + 
 geom_point(aes(color=grepl("\\+",as.character(X1))),size=2) + geom_text_repel(aes(label=X1),size=6) + theme_classic(base_size=16) + xlab("OS Cox model C-index") + ylab("R/NR classification AUC") + 
 scale_color_manual(values=c("black","red")) + theme(legend.position = "none")
-ggsave("figure4_outputs/4h.val_rna_survival_coxcontinuous_pvaluecindex_withBF3models_effectsize.pdf", g_survmodelrnrmodel_compare_val_withBF3models_effectsize,height=7,width=7)
-knitr::include_graphics("figure4_outputs/4h.val_rna_survival_coxcontinuous_pvaluecindex_withBF3models_effectsize.pdf")
+ggsave("figure4_outputs/4h.val_rna_survival_coxcontinuous_pvaluecindex_withBF3models_effectsize.png", g_survmodelrnrmodel_compare_val_withBF3models_effectsize,height=7,width=7)
+knitr::include_graphics("figure4_outputs/4h.val_rna_survival_coxcontinuous_pvaluecindex_withBF3models_effectsize.png")
 ```
 
-<embed src="figure4_outputs/4h.val_rna_survival_coxcontinuous_pvaluecindex_withBF3models_effectsize.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/4h.val_rna_survival_coxcontinuous_pvaluecindex_withBF3models_effectsize.png" width="75%" height="75%" />
 
 ``` {.r}
 print(df_model_comparison_cpb_pfs)
@@ -1941,11 +1944,11 @@ osgenes_ossig$count <- as.numeric(osgenes_ossig$count)
 osgenes_ossig$split <- paste0(unlist(lapply(strsplit(osgenes_ossig$split_index,"_"),"[",1)),"_",unlist(lapply(strsplit(osgenes_ossig$split_index,"_"),"[",2)))
 
 g_osgenes_ossig <- ggplot(osgenes_ossig,aes(x=count+1,color=split)) + stat_ecdf() + theme_classic() + ylab("Count of High/Low OS Bonferroni p<0.05 genes") + xlab("count + 1") + scale_x_log10()
-ggsave("figure4_outputs/S24a.OSgenes_OSsig_count.pdf",g_osgenes_ossig,height=7,width=7)
-knitr::include_graphics("figure4_outputs/S24a.OSgenes_OSsig_count.pdf")
+ggsave("figure4_outputs/S24a.OSgenes_OSsig_count.png",g_osgenes_ossig,height=7,width=7)
+knitr::include_graphics("figure4_outputs/S24a.OSgenes_OSsig_count.png")
 ```
 
-<embed src="figure4_outputs/S24a.OSgenes_OSsig_count.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S24a.OSgenes_OSsig_count.png" width="75%" height="75%" />
 
 ``` {.r}
 all_rnr_results$f_split_index <- factor(all_rnr_results$split_index,levels=all_split_index)
@@ -1962,11 +1965,11 @@ osgenes_bothsig$split <- paste0(unlist(lapply(strsplit(osgenes_bothsig$split_ind
 
 g_osgenes_bothsig <- ggplot(osgenes_bothsig,aes(x=count+1,color=split)) + stat_ecdf() + theme_classic() + ylab("Count of High/Low OS Bonferroni p<0.05 genes for OS and R/NR") +
 xlab("count + 1") + scale_x_log10()
-ggsave("figure4_outputs/S24b.OSgenes_Bothsig_count.pdf",g_osgenes_bothsig,height=7,width=7)
-knitr::include_graphics("figure4_outputs/S24b.OSgenes_Bothsig_count.pdf")
+ggsave("figure4_outputs/S24b.OSgenes_Bothsig_count.png",g_osgenes_bothsig,height=7,width=7)
+knitr::include_graphics("figure4_outputs/S24b.OSgenes_Bothsig_count.png")
 ```
 
-<embed src="figure4_outputs/S24b.OSgenes_Bothsig_count.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S24b.OSgenes_Bothsig_count.png" width="75%" height="75%" />
 
 ``` {.r}
 g_mean_z_hr_1_bonferronipval <- ggplot(all_os_results_meanz,aes(x=gene1gene2_continuous_os_hr_1,y=test_gene1gene2_continuous_os_hr_1)) +
@@ -1974,11 +1977,11 @@ geom_point(aes(color=test_gene1gene2_continuous_logrank_bonferroni_p<0.05)) +
 theme_classic() + xlab("training set mean highOS genes z score HR") + ylab("validation set mean highOS genes z score HR") + scale_x_log10() + scale_y_log10() + facet_grid(~ split) +
 geom_smooth(method="lm",se=FALSE,color="red") + annotation_logticks() + coord_fixed() +
 scale_color_manual(values=c("black","red"),name="validation set bonferroni p < 0.05") + theme(legend.position="bottom")
-ggsave("figure4_outputs/S24c.meanz_train_test_highOS_HR_bonferronipval.pdf",g_mean_z_hr_1_bonferronipval,height=7,width=14)
-knitr::include_graphics("figure4_outputs/S24c.meanz_train_test_highOS_HR_bonferronipval.pdf")
+ggsave("figure4_outputs/S24c.meanz_train_test_highOS_HR_bonferronipval.png",g_mean_z_hr_1_bonferronipval,height=7,width=14)
+knitr::include_graphics("figure4_outputs/S24c.meanz_train_test_highOS_HR_bonferronipval.png")
 ```
 
-<embed src="figure4_outputs/S24c.meanz_train_test_highOS_HR_bonferronipval.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S24c.meanz_train_test_highOS_HR_bonferronipval.png" width="75%" height="75%" />
 
 ``` {.r}
 g_mean_z_hr_2_bonferronipval <- ggplot(all_os_results_meanz,aes(x=gene1gene2_continuous_os_hr_2,y=test_gene1gene2_continuous_os_hr_2)) +
@@ -1986,11 +1989,11 @@ geom_point(aes(color=test_gene1gene2_continuous_logrank_bonferroni_p<0.05)) +
 theme_classic() + xlab("training set mean lowOS genes z score HR") + ylab("validation set mean lowOS genes z score HR") + scale_x_log10() + scale_y_log10() + facet_grid(~ split) +
 geom_smooth(method="lm",se=FALSE,color="red") +  annotation_logticks() + coord_fixed() +
 scale_color_manual(values=c("black","red"),name="validation set bonferroni p < 0.05") + theme(legend.position="bottom")
-ggsave("figure4_outputs/S24d.meanz_train_test_lowOS_HR_bonferronipval.pdf",g_mean_z_hr_2_bonferronipval,height=7,width=14)
-knitr::include_graphics("figure4_outputs/S24d.meanz_train_test_lowOS_HR_bonferronipval.pdf")
+ggsave("figure4_outputs/S24d.meanz_train_test_lowOS_HR_bonferronipval.png",g_mean_z_hr_2_bonferronipval,height=7,width=14)
+knitr::include_graphics("figure4_outputs/S24d.meanz_train_test_lowOS_HR_bonferronipval.png")
 ```
 
-<embed src="figure4_outputs/S24d.meanz_train_test_lowOS_HR_bonferronipval.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S24d.meanz_train_test_lowOS_HR_bonferronipval.png" width="75%" height="75%" />
 
 ``` {.r}
 g_mean_z_hr_1_top25_bonferronipval <- ggplot(all_os_results_meanz_top25,aes(x=gene1gene2_continuous_os_hr_1,y=test_gene1gene2_continuous_os_hr_1)) +
@@ -1998,11 +2001,11 @@ geom_point(aes(color=test_gene1gene2_continuous_logrank_bonferroni_p<0.05)) +
 theme_classic() + xlab("training set mean highOS top 25 genes z score HR") + ylab("validation set mean highOS top 25 genes z score HR") + scale_x_log10() + scale_y_log10() + facet_grid(~ split) +
 geom_smooth(method="lm",se=FALSE,color="red") + annotation_logticks() + coord_fixed() +
 scale_color_manual(values=c("black","red"),name="validation set bonferroni p < 0.05") + theme(legend.position="bottom")
-ggsave("figure4_outputs/S24e.meanz_train_test_highOS_HR_top25_bonferronipval.pdf",g_mean_z_hr_1_top25_bonferronipval,height=7,width=14)
-knitr::include_graphics("figure4_outputs/S24e.meanz_train_test_highOS_HR_top25_bonferronipval.pdf")
+ggsave("figure4_outputs/S24e.meanz_train_test_highOS_HR_top25_bonferronipval.png",g_mean_z_hr_1_top25_bonferronipval,height=7,width=14)
+knitr::include_graphics("figure4_outputs/S24e.meanz_train_test_highOS_HR_top25_bonferronipval.png")
 ```
 
-<embed src="figure4_outputs/S24e.meanz_train_test_highOS_HR_top25_bonferronipval.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S24e.meanz_train_test_highOS_HR_top25_bonferronipval.png" width="75%" height="75%" />
 
 ``` {.r}
 g_mean_z_hr_2_top25_bonferronipval <- ggplot(all_os_results_meanz_top25,aes(x=gene1gene2_continuous_os_hr_2,y=test_gene1gene2_continuous_os_hr_2)) +
@@ -2010,11 +2013,11 @@ geom_point(aes(color=test_gene1gene2_continuous_logrank_bonferroni_p<0.05)) +
 theme_classic() + xlab("training set mean lowOS top 25 genes z score HR") + ylab("validation set mean lowOS top 25 genes z score HR") + scale_x_log10() + scale_y_log10() + facet_grid(~ split) +
 geom_smooth(method="lm",se=FALSE,color="red") +  annotation_logticks() + coord_fixed() +
 scale_color_manual(values=c("black","red"),name="validation set bonferroni p < 0.05") + theme(legend.position="bottom")
-ggsave("figure4_outputs/S24f.meanz_train_test_lowOS_HR_top25_bonferronipval.pdf",g_mean_z_hr_2_top25_bonferronipval,height=7,width=14)
-knitr::include_graphics("figure4_outputs/S24f.meanz_train_test_lowOS_HR_top25_bonferronipval.pdf")
+ggsave("figure4_outputs/S24f.meanz_train_test_lowOS_HR_top25_bonferronipval.png",g_mean_z_hr_2_top25_bonferronipval,height=7,width=14)
+knitr::include_graphics("figure4_outputs/S24f.meanz_train_test_lowOS_HR_top25_bonferronipval.png")
 ```
 
-<embed src="figure4_outputs/S24f.meanz_train_test_lowOS_HR_top25_bonferronipval.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S24f.meanz_train_test_lowOS_HR_top25_bonferronipval.png" width="75%" height="75%" />
 
 ``` {.r}
 print(data.frame(cbind(names(sort(table(all_os_results[all_os_results$split=="80_20",]$gene_pair),decreasing=T)[1:10]),
@@ -2429,21 +2432,21 @@ all_os_bothsig_results$validation_set_size <- unlist(factor(lapply(strsplit(all_
 g_bestmod_bar <- ggplot(all_os_results[all_os_results$gene_pair %in% c("MAP4K1_TBX3","MAP4K1_AGER","mean.highos.genes.z.top25_mean.lowos.genes.z.top25","mean.highos.genes.z_mean.lowos.genes.z"),],
 aes(x=gene_pair)) + geom_bar(stat="count",fill="lightblue") + facet_grid(~ training_set_size) + theme_classic() +
 theme(axis.text.x = element_text(angle = 90)) + stat_count(geom = "text", colour = "black", size = 3.5,aes(label = ..count..),position=position_stack(vjust=0.5)) + ylim(0,250)
-ggsave("figure4_outputs/S24g.training_models_barchart.pdf",g_bestmod_bar)
-knitr::include_graphics("figure4_outputs/S24g.training_models_barchart.pdf")
+ggsave("figure4_outputs/S24g.training_models_barchart.png",g_bestmod_bar)
+knitr::include_graphics("figure4_outputs/S24g.training_models_barchart.png")
 ```
 
-<embed src="figure4_outputs/S24g.training_models_barchart.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S24g.training_models_barchart.png" width="75%" height="75%" />
 
 ``` {.r}
 g_bestmod_bar_bothsig <- ggplot(all_os_bothsig_results[all_os_bothsig_results$gene_pair %in% c("MAP4K1_TBX3","MAP4K1_AGER","mean.highos.genes.z.top25_mean.lowos.genes.z.top25",
 "mean.highos.genes.z_mean.lowos.genes.z"),],aes(x=gene_pair)) + geom_bar(stat="count",fill="lightblue") + facet_grid(~ training_set_size) + theme_classic() +
 theme(axis.text.x = element_text(angle = 90)) + stat_count(geom = "text", colour = "black", size = 3.5,aes(label = ..count..),position=position_stack(vjust=0.5)) + ylim(0,250)
-ggsave("figure4_outputs/S24h.training_models_barchart_bothsig.pdf",g_bestmod_bar_bothsig)
-knitr::include_graphics("figure4_outputs/S24h.training_models_barchart_bothsig.pdf")
+ggsave("figure4_outputs/S24h.training_models_barchart_bothsig.png",g_bestmod_bar_bothsig)
+knitr::include_graphics("figure4_outputs/S24h.training_models_barchart_bothsig.png")
 ```
 
-<embed src="figure4_outputs/S24h.training_models_barchart_bothsig.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S24h.training_models_barchart_bothsig.png" width="75%" height="75%" />
 
 ``` {.r}
 g_bestmod_bar_validated <- ggplot(all_os_results[all_os_results$test_gene1gene2_continuous_logrank_bonferroni_p<0.05&all_os_results$gene_pair %in%  c("MAP4K1_TBX3","MAP4K1_AGER",
@@ -2451,22 +2454,22 @@ g_bestmod_bar_validated <- ggplot(all_os_results[all_os_results$test_gene1gene2_
 facet_grid(~ validation_set_size) + theme_classic() + theme(axis.text.x = element_text(angle = 90)) +
 stat_count(geom = "text", colour = "black", size = 3.5,aes(label = ..count..),position=position_stack(vjust=0.5)) + ylim(0,250) +
 scale_x_discrete(limits=c("MAP4K1_AGER","MAP4K1_TBX3","mean.highos.genes.z.top25_mean.lowos.genes.z.top25","mean.highos.genes.z_mean.lowos.genes.z"))
-ggsave("figure4_outputs/S24i.validated_models_barchart.pdf",g_bestmod_bar_validated)
-knitr::include_graphics("figure4_outputs/S24i.validated_models_barchart.pdf")
+ggsave("figure4_outputs/S24i.validated_models_barchart.png",g_bestmod_bar_validated)
+knitr::include_graphics("figure4_outputs/S24i.validated_models_barchart.png")
 ```
 
-<embed src="figure4_outputs/S24i.validated_models_barchart.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S24i.validated_models_barchart.png" width="75%" height="75%" />
 
 ``` {.r}
 g_bestmod_bar_bothsig_validated <- ggplot(all_os_bothsig_results[all_os_bothsig_results$test_gene1gene2_continuous_logrank_bonferroni_p<0.05&
 all_os_bothsig_results$test_gene1gene2_continuous_rnr_roc_bonferroni_p<0.05&all_os_bothsig_results$gene_pair %in% c("MAP4K1_TBX3","MAP4K1_AGER","mean.highos.genes.z.top25_mean.lowos.genes.z.top25",
 "mean.highos.genes.z_mean.lowos.genes.z"),],aes(x=gene_pair)) + geom_bar(stat="count",fill="lightblue") + facet_grid(~ validation_set_size) + theme_classic() +
 theme(axis.text.x = element_text(angle = 90)) + stat_count(geom = "text", colour = "black", size = 3.5,aes(label = ..count..),position=position_stack(vjust=0.5)) + ylim(0,250)
-ggsave("figure4_outputs/S24j.validated_models_barchart_bothsig.pdf",g_bestmod_bar_bothsig_validated)
-knitr::include_graphics("figure4_outputs/S24j.validated_models_barchart_bothsig.pdf")
+ggsave("figure4_outputs/S24j.validated_models_barchart_bothsig.png",g_bestmod_bar_bothsig_validated)
+knitr::include_graphics("figure4_outputs/S24j.validated_models_barchart_bothsig.png")
 ```
 
-<embed src="figure4_outputs/S24j.validated_models_barchart_bothsig.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S24j.validated_models_barchart_bothsig.png" width="75%" height="75%" />
 
 Functions
 
@@ -2649,29 +2652,29 @@ x <- x[x%in%rownames(expr.fold)]  ### expr.fold=fold-change based expression mat
 x0.new <- expr.fold[match(x,rownames(expr.fold),nomatch=0),ordering.new]
 rownames(x0.new) <- gencode_coding$Gene[match(rownames(x0.new),gencode_coding$Gene.id,nomatch=0)]
 
-pdf(file=paste(OUTPUT,paste("S25c",cohort,"marker0.expr.fold.Bayes",0.5,"ordered.full.pdf",sep="."),sep=""),width=12,height=12)
+png(file=paste(OUTPUT,paste("S25c",cohort,"marker0.expr.fold.Bayes",0.5,"ordered.full.png",sep="."),sep=""),width=1600,height=1600,res=200)
 #        p <- plot.expr.fold.heatmap0(x0,1.0,3.0,g.Bayes[ordering])
         p <- plot.expr.fold.heatmap0(x0.new,0.5,3,g.Bayes.new[ordering.new])
         plot(p)
 dev.off()
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/S25c.Validation.marker0.expr.fold.Bayes.0.5.ordered.full.pdf")
+knitr::include_graphics("figure4_outputs/S25c.Validation.marker0.expr.fold.Bayes.0.5.ordered.full.png")
 ```
 
-<embed src="figure4_outputs/S25c.Validation.marker0.expr.fold.Bayes.0.5.ordered.full.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S25c.Validation.marker0.expr.fold.Bayes.0.5.ordered.full.png" width="100%" height="100%" />
 
 ``` {.r}
 plist_val_proj <- get.sample.association.heatmap(H.Bayes.new,g.Bayes.new,scale=1)
-ggsave("figure4_outputs/S25b.Validation_H_norm_newcolors.pdf",plist_val_proj[[2]],height=7,width=7)
-knitr::include_graphics("figure4_outputs/S25b.Validation_H_norm_newcolors.pdf")
+ggsave("figure4_outputs/S25b.Validation_H_norm_newcolors.png",plist_val_proj[[2]],height=7,width=7)
+knitr::include_graphics("figure4_outputs/S25b.Validation_H_norm_newcolors.png")
 ```
 
-<embed src="figure4_outputs/S25b.Validation_H_norm_newcolors.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S25b.Validation_H_norm_newcolors.png" width="100%" height="100%" />
 
 ``` {.r}
 clin$study <- "CPB"
@@ -2683,50 +2686,50 @@ g_subtype_cohorts <- ggplot(tdf) + geom_mosaic(aes(weight=value,x=product(Var2),
 cbpalette_reordered[5],cbpalette_reordered[1],cbpalette_reordered[3])) + theme_bw() +
 theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),legend.title=element_blank(),axis.text.x=element_text(size=12),axis.text.y=element_text(size=12)) +
 xlab("") + ylab("") + annotate(geom="text",x=0.5,y=1.02,label=tmp_ft_pstring) + scale_y_continuous(breaks=seq(0,1,by=0.25))
-ggsave("figure4_outputs/S25d.Validation_CPB_subtype_redblue_GideLiu.pdf",g_subtype_cohorts + geom_text(data = ggplot_build(g_subtype_cohorts)$data[[1]], aes(x = (xmin+xmax)/2, y = (ymin+ymax)/2, label=.wt)))
-knitr::include_graphics("figure4_outputs/S25d.Validation_CPB_subtype_redblue_GideLiu.pdf")
+ggsave("figure4_outputs/S25d.Validation_CPB_subtype_redblue_GideLiu.png",g_subtype_cohorts + geom_text(data = ggplot_build(g_subtype_cohorts)$data[[1]], aes(x = (xmin+xmax)/2, y = (ymin+ymax)/2, label=.wt)))
+knitr::include_graphics("figure4_outputs/S25d.Validation_CPB_subtype_redblue_GideLiu.png")
 ```
 
-<embed src="figure4_outputs/S25d.Validation_CPB_subtype_redblue_GideLiu.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S25d.Validation_CPB_subtype_redblue_GideLiu.png" width="100%" height="100%" />
 
 ``` {.r}
 tmpkt <- kruskal.test(skcm_clin$rna_tcb,skcm_clin$plot_cluster)
 g_tcb_cluster <- ggplot(skcm_clin,aes(x=plot_cluster,y=rna_tcb)) + geom_boxplot(aes(fill= plot_cluster),outlier.shape=NA) + geom_jitter() + theme_classic() + ylab(expression(TCB[RNA])) + xlab("") +
 scale_fill_manual(values=cbpalette_reordered) + annotate(geom="text",x=2.5,y=10,label=paste0("Kruskal-Wallis p = ",formatC(tmpkt$p.value,digits=2,format="e"))) + scale_y_log10()
-ggsave("figure4_outputs/S25e.Validation_rna_tcb_cluster.pdf", g_tcb_cluster)
-knitr::include_graphics("figure4_outputs/S25e.Validation_rna_tcb_cluster.pdf")
+ggsave("figure4_outputs/S25e.Validation_rna_tcb_cluster.png", g_tcb_cluster)
+knitr::include_graphics("figure4_outputs/S25e.Validation_rna_tcb_cluster.png")
 ```
 
-<embed src="figure4_outputs/S25e.Validation_rna_tcb_cluster.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S25e.Validation_rna_tcb_cluster.png" width="100%" height="100%" />
 
 ``` {.r}
 tmpkt <- kruskal.test(skcm_clin$rna_bcb,skcm_clin$plot_cluster)
 g_bcb_cluster <- ggplot(skcm_clin,aes(x=plot_cluster,y=rna_bcb)) + geom_boxplot(aes(fill= plot_cluster),outlier.shape=NA) + geom_jitter() + theme_classic() + ylab(expression(BCB[RNA])) + xlab("") +
 scale_fill_manual(values=cbpalette_reordered) + annotate(geom="text",x=2.5,y=1000,label=paste0("Kruskal-Wallis p = ",formatC(tmpkt$p.value,digits=2,format="e"))) + scale_y_log10()
-ggsave("figure4_outputs/S25f.Validation_rna_bcb_cluster.pdf", g_bcb_cluster)
-knitr::include_graphics("figure4_outputs/S25f.Validation_rna_bcb_cluster.pdf")
+ggsave("figure4_outputs/S25f.Validation_rna_bcb_cluster.png", g_bcb_cluster)
+knitr::include_graphics("figure4_outputs/S25f.Validation_rna_bcb_cluster.png")
 ```
 
-<embed src="figure4_outputs/S25f.Validation_rna_bcb_cluster.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S25f.Validation_rna_bcb_cluster.png" width="100%" height="100%" />
 
 ``` {.r}
 skcm_clin$class <- skcm_clin$plot_cluster
 tmp_cph <- summary(coxph(surv ~ class, data = skcm_clin))
 skcm_nmf_cluster_p_string <- paste0(" Log-rank p=",as.character(formatC(tmp_cph$sctest["pvalue"],digits=2,format="e")))
-pdf("figure4_outputs/S25g.Validation_nmf_cluster_survival.pdf",onefile=F)
+png("figure4_outputs/S25g.Validation_nmf_cluster_survival.png",height=700,width=700,res=100)
 fit<- survfit(surv ~ class, data = skcm_clin)
 ggsurvplot(fit, data = skcm_clin,pval=TRUE,pval.method=TRUE,legend=c(0.75,0.9),censor=TRUE,palette=cbpalette_reordered[1:5],title=skcm_nmf_cluster_p_string)
 dev.off()
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/S25g.Validation_nmf_cluster_survival.pdf")
+knitr::include_graphics("figure4_outputs/S25g.Validation_nmf_cluster_survival.png")
 ```
 
-<embed src="figure4_outputs/S25g.Validation_nmf_cluster_survival.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S25g.Validation_nmf_cluster_survival.png" width="100%" height="100%" />
 
 ``` {.r}
 tdf <- reshape2::melt(table(skcm_clin$Response,skcm_clin$plot_cluster))
@@ -2736,11 +2739,11 @@ tmp_ft_orstring <- paste0("OR: ",formatC(tmp_ft$estimate,digits=2),", 95% CI ",f
 g_rnr_subtype <- ggplot(tdf) + geom_mosaic(aes(weight=value,x=product(Var2),fill=Var1),offset=0.01) + scale_fill_manual(values=c("red","blue")) + theme_bw() +
 theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),legend.title=element_blank(),axis.text.x=element_text(size=12),axis.text.y=element_text(size=12)) +
 xlab("") + ylab("") + annotate(geom="text",x=0.5,y=1.02,label=tmp_ft_pstring) + scale_y_continuous(breaks=seq(0,1,by=0.25))
-ggsave("figure4_outputs/S25h.subtype_Validation_response_redblue.pdf",g_rnr_subtype + geom_text(data = ggplot_build(g_rnr_subtype)$data[[1]], aes(x = (xmin+xmax)/2, y = (ymin+ymax)/2, label=.wt)))
-knitr::include_graphics("figure4_outputs/S25h.subtype_Validation_response_redblue.pdf")
+ggsave("figure4_outputs/S25h.subtype_Validation_response_redblue.png",g_rnr_subtype + geom_text(data = ggplot_build(g_rnr_subtype)$data[[1]], aes(x = (xmin+xmax)/2, y = (ymin+ymax)/2, label=.wt)))
+knitr::include_graphics("figure4_outputs/S25h.subtype_Validation_response_redblue.png")
 ```
 
-<embed src="figure4_outputs/S25h.subtype_Validation_response_redblue.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S25h.subtype_Validation_response_redblue.png" width="100%" height="100%" />
 
 ``` {.r}
 skcm_clin$plot_cluster_immuneonly <- ifelse(skcm_clin$plot_cluster=="Immune","Immune","Others")
@@ -2751,38 +2754,38 @@ skcm_clin$class <- skcm_clin$plot_cluster_immuneonly
 class_table <- table(skcm_clin$class)
 skcm_immune_hr_string <- paste0("HR=",formatC(skcm_immune_hr,digits=3)," (95% CI, ",formatC(skcm_immune_hr_lo,digits=3),"-",formatC(skcm_immune_hr_hi,digits=3),")\n",
 names(class_table)[1],"=",class_table[[1]]," ",names(class_table)[2],"=",class_table[[2]])
-pdf("figure4_outputs/4f.Validation_Immuneonly_survival_bestrest.pdf",onefile=F)
+png("figure4_outputs/4f.Validation_Immuneonly_survival_bestrest.png",height=700,width=700,res=100)
 fit<- survfit(surv ~ class, data = skcm_clin)
 ggsurvplot(fit, data = skcm_clin,pval=TRUE,pval.method=TRUE,legend=c(0.75,0.90),censor=TRUE,palette=c("blue","red"),title=skcm_immune_hr_string)
 dev.off()
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/4f.Validation_Immuneonly_survival_bestrest.pdf")
+knitr::include_graphics("figure4_outputs/4f.Validation_Immuneonly_survival_bestrest.png")
 ```
 
-<embed src="figure4_outputs/4f.Validation_Immuneonly_survival_bestrest.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/4f.Validation_Immuneonly_survival_bestrest.png" width="100%" height="100%" />
 
 ``` {.r}
 tmp_cph <- coxph(surv ~ MAP4K1 + TBX3,data=clin[!is.na(clin$surv),])
 tmp_cpb_ggforest_MAP4K1_TBX3 <- ggforest(tmp_cph,data=clin[!is.na(clin$surv),],fontsize=0.9)
-ggsave("figure4_outputs/4i.CPB_MAP4K1TBX3_forestplot.pdf",tmp_cpb_ggforest_MAP4K1_TBX3,height=3,width=6)
-knitr::include_graphics("figure4_outputs/4i.CPB_MAP4K1TBX3_forestplot.pdf")
+ggsave("figure4_outputs/4i.CPB_MAP4K1TBX3_forestplot.png",tmp_cpb_ggforest_MAP4K1_TBX3,height=3,width=6)
+knitr::include_graphics("figure4_outputs/4i.CPB_MAP4K1TBX3_forestplot.png")
 ```
 
-<embed src="figure4_outputs/4i.CPB_MAP4K1TBX3_forestplot.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/4i.CPB_MAP4K1TBX3_forestplot.png" width="100%" height="100%" />
 
 ``` {.r}
 tmp_cph <- coxph(surv ~ MAP4K1 + TBX3,data=skcm_clin[!is.na(skcm_clin$surv),])
 tmp_val_ggforest_MAP4K1_TBX3 <- ggforest(tmp_cph,data=skcm_clin[!is.na(skcm_clin$surv),],fontsize=0.9)
-ggsave("figure4_outputs/4j.Val_MAP4K1TBX3_forestplot.pdf",tmp_val_ggforest_MAP4K1_TBX3,height=3,width=6)
-knitr::include_graphics("figure4_outputs/4j.Val_MAP4K1TBX3_forestplot.pdf")
+ggsave("figure4_outputs/4j.Val_MAP4K1TBX3_forestplot.png",tmp_val_ggforest_MAP4K1_TBX3,height=3,width=6)
+knitr::include_graphics("figure4_outputs/4j.Val_MAP4K1TBX3_forestplot.png")
 ```
 
-<embed src="figure4_outputs/4j.Val_MAP4K1TBX3_forestplot.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/4j.Val_MAP4K1TBX3_forestplot.png" width="100%" height="100%" />
 
 ``` {.r}
 clin$tmp_pred_MAP4K1_TBX3 <- NA
@@ -2797,21 +2800,21 @@ cpb_pred_hr_hi <- tmp_cph$conf.int[1,4]
 class_table <- table(clin[!is.na(clin$surv),]$class)
 cpb_map4k1tbx3_hr_string <- paste0("Primary: ","HR=",formatC(cpb_pred_hr,digits=3)," (95% CI, ",formatC(cpb_pred_hr_lo,digits=3),"-",formatC(cpb_pred_hr_hi,digits=3),"\n",
 " Log-rank p=",as.character(formatC(tmp_cph$sctest["pvalue"],digits=2,format="e")),names(class_table)[1],"=",class_table[[1]]," ",names(class_table)[2],"=",class_table[[2]])
-pdf("figure4_outputs/4k.CPB_MAP4K1_TBX3_cut2.pdf",onefile=F)
+png("figure4_outputs/4k.CPB_MAP4K1_TBX3_cut2.png",height=700,width=700,res=100)
 fit<- survfit(surv ~ tmp_pred_MAP4K1_TBX3_cut2, data = clin[!is.na(clin$surv),])
 ggsurvplot(fit, data = clin[!is.na(clin$surv),],pval=TRUE,pval.method=TRUE,legend=c(0.75,0.90),censor=TRUE,palette=c("blue","red"),legend.labs=c("Low risk", "High risk"),
 legend.title="MAP4K1+TBX3 model risk",title=cpb_map4k1tbx3_hr_string,font.legend=12)
 dev.off()
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/4k.CPB_MAP4K1_TBX3_cut2.pdf")
+knitr::include_graphics("figure4_outputs/4k.CPB_MAP4K1_TBX3_cut2.png")
 ```
 
-<embed src="figure4_outputs/4k.CPB_MAP4K1_TBX3_cut2.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/4k.CPB_MAP4K1_TBX3_cut2.png" width="100%" height="100%" />
 
 ``` {.r}
 skcm_clin$tmp_pred_MAP4K1_TBX3 <- predict(coxph(surv ~ MAP4K1 + TBX3,data=skcm_clin))
@@ -2826,22 +2829,21 @@ val_pred_hr_hi <- tmp_cph$conf.int[1,4]
 class_table <- table(skcm_clin$class)
 val_map4k1tbx3_hr_string <- paste0("Secondary: ","HR=",formatC(val_pred_hr,digits=3)," (95% CI, ",formatC(val_pred_hr_lo,digits=3),"-",formatC(val_pred_hr_hi,digits=3),"\n",
 " Log-rank p=",as.character(formatC(tmp_cph$sctest["pvalue"],digits=2,format="e")),names(class_table)[1],"=",class_table[[1]]," ",names(class_table)[2],"=",class_table[[2]])
-pdf("figure4_outputs/4l.Val_MAP4K1_TBX3_cut2.pdf",onefile=F)
+png("figure4_outputs/4l.Val_MAP4K1_TBX3_cut2.png",height=700,width=700,res=100)
 fit<- survfit(surv ~ tmp_pred_MAP4K1_TBX3_cut2, data = skcm_clin)
 ggsurvplot(fit, data = skcm_clin,pval=TRUE,pval.method=TRUE,legend=c(0.75,0.90),censor=TRUE,palette=c("blue","red"),legend.labs=c("Low risk", "High risk"),
 legend.title="MAP4K1+TBX3 model risk",title=val_map4k1tbx3_hr_string,font.legend=12)
 dev.off()
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/4l.Val_MAP4K1_TBX3_cut2.pdf")
+knitr::include_graphics("figure4_outputs/4l.Val_MAP4K1_TBX3_cut2.png")
 ```
 
-<embed src="figure4_outputs/4l.Val_MAP4K1_TBX3_cut2.pdf" width="600px" height="600px" type="application/pdf" />
-
+<img src="figure4_outputs/4l.Val_MAP4K1_TBX3_cut2.png" width="100%" height="100%" />
 
 ``` {.r}
 val_raw_heatmap_annotation_colors <- list(
@@ -2874,36 +2876,35 @@ annotation_col=skcm_clin[,c("cohort","Response","OS","plot_cluster")],
 cluster_rows=TRUE,cluster_cols=TRUE,clustering_distance_rows="correlation",fontsize_row=5, fontsize_col=3,cellwidth=3,cellheight=5,fontsize=5,na_col="grey",
 breaks=tmp_val_rawdata_breaks_9,color=rev(brewer.pal(n = 9, name = "RdBu")),treeheight_row=10,treeheight_col=10,annotation_colors=val_raw_heatmap_annotation_colors,
 legend_breaks=c(-4,-3,-2,-1,0,1,2,3,4))
-save_pheatmap_pdf(secondary_heatmap, "figure4_outputs/S26a.Secondary_OSgenes_rawdata_heatmap_clustered_9col.pdf")
+save_pheatmap_png(secondary_heatmap, "figure4_outputs/S26a.Secondary_OSgenes_rawdata_heatmap_clustered_9col.png",width=2000,height=1200,res=200)
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/S26a.Secondary_OSgenes_rawdata_heatmap_clustered_9col.pdf")
+knitr::include_graphics("figure4_outputs/S26a.Secondary_OSgenes_rawdata_heatmap_clustered_9col.png")
 ```
 
-<embed src="figure4_outputs/S26a.Secondary_OSgenes_rawdata_heatmap_clustered_9col.pdf" width="700px" height="700px" type="application/pdf" />
-
+<img src="figure4_outputs/S26a.Secondary_OSgenes_rawdata_heatmap_clustered_9col.png" width="100%" height="100%" />
 
 ``` {.r}
 tmp_cph <- coxph(surv ~ mean_highos_genes_z + mean_lowos_genes_z,data=skcm_clin[!is.na(skcm_clin$surv),])
 tmp_val_ggforest_mean_highos_z_mean_lowos_z <- ggforest(tmp_cph,data=skcm_clin[!is.na(skcm_clin$surv),],fontsize=0.9)
-ggsave("figure4_outputs/S26e.Val_mean_highos_z_mean_lowos_z_forestplot.pdf",tmp_val_ggforest_mean_highos_z_mean_lowos_z,height=3,width=9)
-knitr::include_graphics("figure4_outputs/S26e.Val_mean_highos_z_mean_lowos_z_forestplot.pdf")
+ggsave("figure4_outputs/S26e.Val_mean_highos_z_mean_lowos_z_forestplot.png",tmp_val_ggforest_mean_highos_z_mean_lowos_z,height=3,width=9)
+knitr::include_graphics("figure4_outputs/S26e.Val_mean_highos_z_mean_lowos_z_forestplot.png")
 ```
 
-<embed src="figure4_outputs/S26e.Val_mean_highos_z_mean_lowos_z_forestplot.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S26e.Val_mean_highos_z_mean_lowos_z_forestplot.png" width="75%" height="75%" />
 
 ``` {.r}
 tmp_cph <- coxph(surv ~ MAP4K1 + AGER,data=skcm_clin[!is.na(skcm_clin$surv),])
 tmp_val_ggforest_MAP4K1_AGER <- ggforest(tmp_cph,data=skcm_clin[!is.na(skcm_clin$surv),],fontsize=0.9)
-ggsave("figure4_outputs/S26f.Val_MAP4K1AGER_forestplot.pdf",tmp_val_ggforest_MAP4K1_AGER,height=3,width=9)
-knitr::include_graphics("figure4_outputs/S26f.Val_MAP4K1AGER_forestplot.pdf")
+ggsave("figure4_outputs/S26f.Val_MAP4K1AGER_forestplot.png",tmp_val_ggforest_MAP4K1_AGER,height=3,width=9)
+knitr::include_graphics("figure4_outputs/S26f.Val_MAP4K1AGER_forestplot.png")
 ```
 
-<embed src="figure4_outputs/S26f.Val_MAP4K1AGER_forestplot.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S26f.Val_MAP4K1AGER_forestplot.png" width="75%" height="75%" />
 
 ``` {.r}
 cpb_MAP4K1_vs_MAP4K1TBX3 <- formatC(anova(coxph(surv ~ MAP4K1,data=clin),coxph(surv ~ MAP4K1 + TBX3,data=clin))$"P(>|Chi|)"[2],format="e",digits=2)
@@ -2914,19 +2915,19 @@ val_TBX3_vs_MAP4K1TBX3 <- formatC(anova(coxph(surv ~ TBX3 + treatment_type,data=
 df_MAP4K1TBX3_LRT_p <- data.frame(cohort=c("Primary","Secondary"),model_plusTBX3=c(cpb_MAP4K1_vs_MAP4K1TBX3,val_MAP4K1_vs_MAP4K1TBX3),TBX3_plus_model=c(cpb_TBX3_vs_MAP4K1TBX3,val_TBX3_vs_MAP4K1TBX3),
 stringsAsFactors=F)
 colnames(df_MAP4K1TBX3_LRT_p) <- c("cohort","Likelihood Ratio Test p\nfor MAP4K1 + TBX3 model\nvs. MAP4K1 model","Likelihood Ratio Test p\nfor MAP4K1 + TBX3 model\nvs. TBX3 model")
-pdf("figure4_outputs/S26g.Model_comparison_MAP4K1_TBX3_likelihoodratiotests_bothorders.pdf")
+png("figure4_outputs/S26g.Model_comparison_MAP4K1_TBX3_likelihoodratiotests_bothorders.png",height=700,width=700,res=100)
 grid.table(df_MAP4K1TBX3_LRT_p, rows=NULL)
 dev.off()
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/S26g.Model_comparison_MAP4K1_TBX3_likelihoodratiotests_bothorders.pdf")
+knitr::include_graphics("figure4_outputs/S26g.Model_comparison_MAP4K1_TBX3_likelihoodratiotests_bothorders.png")
 ```
 
-<embed src="figure4_outputs/S26g.Model_comparison_MAP4K1_TBX3_likelihoodratiotests_bothorders.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S26g.Model_comparison_MAP4K1_TBX3_likelihoodratiotests_bothorders.png" width="75%" height="75%" />
 
 ``` {.r}
 clin$MAP4K1_TBX3_categ <- paste0(ifelse(clin$TBX3>median(clin$TBX3),"High TBX3","Low TBX3"),", ",ifelse(clin$MAP4K1>median(clin$MAP4K1),"High MAP4K1","Low MAP4K1"))
@@ -2938,7 +2939,7 @@ tmp_cph <- summary(coxph(surv ~ class,data=clin[!is.na(clin$surv),]))
 cpb_map4k1tbx3_binary_string <- paste0("Log-rank p=",as.character(formatC(tmp_cph$sctest["pvalue"],digits=2,format="e")),"\n",
 names(class_table)[1],"=",class_table[[1]]," ",names(class_table)[2],"=",class_table[[2]],"\n",
 names(class_table)[3],"=",class_table[[3]]," ",names(class_table)[4],"=",class_table[[4]])
-pdf("figure4_outputs/S26h.CPB_MAP4K1_TBX3_highlow.pdf",onefile=F)
+png("figure4_outputs/S26h.CPB_MAP4K1_TBX3_highlow.png",height=700,width=700,res=100)
 fit<- survfit(surv ~ MAP4K1_TBX3_categ, data = clin)
 ggsurvplot(fit, data = clin,pval=TRUE,pval.method=TRUE,legend=c(0.75,0.90),censor=TRUE,palette=c("blue","red","green","purple"),legend.title="MAP4K1+TBX3 binary models",
 legend.labs=c("High TBX3, High MAP4K1", "High TBX3, Low MAP4K1","Low TBX3, High MAP4K1","Low TBX3, Low MAP4K1"),
@@ -2946,14 +2947,14 @@ title=cpb_map4k1tbx3_binary_string,font.legend=12)
 dev.off()
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/S26h.CPB_MAP4K1_TBX3_highlow.pdf")
+knitr::include_graphics("figure4_outputs/S26h.CPB_MAP4K1_TBX3_highlow.png")
 ```
 
-<embed src="figure4_outputs/S26h.CPB_MAP4K1_TBX3_highlow.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S26h.CPB_MAP4K1_TBX3_highlow.png" width="75%" height="75%" />
 
 ``` {.r}
 skcm_clin$class <- skcm_clin$MAP4K1_TBX3_categ
@@ -2962,7 +2963,7 @@ tmp_cph <- summary(coxph(surv ~ class,data=skcm_clin))
 val_map4k1tbx3_binary_string <- paste0("Log-rank p=",as.character(formatC(tmp_cph$sctest["pvalue"],digits=2,format="e")),"\n",
 names(class_table)[1],"=",class_table[[1]]," ",names(class_table)[2],"=",class_table[[2]],"\n",
 names(class_table)[3],"=",class_table[[3]]," ",names(class_table)[4],"=",class_table[[4]])
-pdf("figure4_outputs/S26i.Val_MAP4K1_TBX3_highlow.pdf",onefile=F)
+png("figure4_outputs/S26i.Val_MAP4K1_TBX3_highlow.png",height=700,width=700,res=100)
 fit<- survfit(surv ~ MAP4K1_TBX3_categ, data = skcm_clin)
 ggsurvplot(fit, data = skcm_clin,pval=TRUE,pval.method=TRUE,legend=c(0.75,0.90),censor=TRUE,palette=c("blue","red","green","purple"),legend.title="MAP4K1+TBX3 binary models",
 legend.labs=c("High TBX3, High MAP4K1", "High TBX3, Low MAP4K1","Low TBX3, High MAP4K1","Low TBX3, Low MAP4K1"),
@@ -2970,14 +2971,14 @@ title=val_map4k1tbx3_binary_string,font.legend=12)
 dev.off()
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/S26i.Val_MAP4K1_TBX3_highlow.pdf")
+knitr::include_graphics("figure4_outputs/S26i.Val_MAP4K1_TBX3_highlow.png")
 ```
 
-<embed src="figure4_outputs/S26i.Val_MAP4K1_TBX3_highlow.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S26i.Val_MAP4K1_TBX3_highlow.png" width="75%" height="75%" />
 
 ``` {.r}
 skcm_therapy_hr <- summary(coxph(surv ~ treatment_type=="PD1",data=skcm_clin))$coef[1,2] #1.62
@@ -2987,37 +2988,37 @@ skcm_clin$class <- skcm_clin$treatment_type
 class_table <- table(skcm_clin$class)
 skcm_therapy_hr_string <- paste0("HR=",formatC(skcm_therapy_hr,digits=3)," (95% CI, ",formatC(skcm_therapy_hr_lo,digits=3),"-",formatC(skcm_therapy_hr_hi,digits=3),")","\n",
 names(class_table)[1],"=",class_table[[1]]," ",names(class_table)[2],"=",class_table[[2]])
-pdf("figure4_outputs/S26jValidation_therapy_survival.pdf",onefile=F)
+png("figure4_outputs/S26jValidation_therapy_survival.png",height=700,width=700,res=100)
 fit<- survfit(surv ~ class, data = skcm_clin)
 ggsurvplot(fit, data = skcm_clin,pval=TRUE,pval.method=TRUE,legend=c(0.75,0.90),censor=TRUE,palette=c("blue","red"),title=skcm_therapy_hr_string)
 dev.off()
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/S26jValidation_therapy_survival.pdf")
+knitr::include_graphics("figure4_outputs/S26jValidation_therapy_survival.png")
 ```
 
-<embed src="figure4_outputs/S26jValidation_therapy_survival.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S26jValidation_therapy_survival.png" width="75%" height="75%" />
 
 ``` {.r}
 tmp_cph <- coxph(surv ~ MAP4K1 + TBX3 + treatment_type,data=skcm_clin)
 tmp_ggforest_MAP4K1_TBX3_val_withtreatment <- ggforest(tmp_cph,data=skcm_clin,fontsize=0.9)
-ggsave("figure4_outputs/S26k.Validation_MAP4K1_TBX3_forestplot_withtreatment.pdf",tmp_ggforest_MAP4K1_TBX3_val_withtreatment,height=4,width=7)
-knitr::include_graphics("figure4_outputs/S26k.Validation_MAP4K1_TBX3_forestplot_withtreatment.pdf")
+ggsave("figure4_outputs/S26k.Validation_MAP4K1_TBX3_forestplot_withtreatment.png",tmp_ggforest_MAP4K1_TBX3_val_withtreatment,height=4,width=7)
+knitr::include_graphics("figure4_outputs/S26k.Validation_MAP4K1_TBX3_forestplot_withtreatment.png")
 ```
 
-<embed src="figure4_outputs/S26k.Validation_MAP4K1_TBX3_forestplot_withtreatment.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S26k.Validation_MAP4K1_TBX3_forestplot_withtreatment.png" width="75%" height="75%" />
 
 Functions
 
 ``` {.r}
-plot_multicohort_survival <- function(df1,df2,var1,var1_string,pdf_string,ymax_label_shift,var1_y_breaks) {
-#plot_multicohort_survival(clin,skcm_clin,"CD274","CD274","S27a.multicohort_CD274_HR_p.pdf",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
+plot_multicohort_survival <- function(df1,df2,var1,var1_string,png_string,ymax_label_shift,var1_y_breaks) {
+#plot_multicohort_survival(clin,skcm_clin,"CD274","CD274","S27a.multicohort_CD274_HR_p.png",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
 
-#print(pdf_string)
+#print(png_string)
 
 df1$var1 <- df1[,var1]
 df2$var1 <- df2[,var1]
@@ -3101,13 +3102,13 @@ g_var1_allmeta_hr_p <- ggplot(df_cph_var1,aes(x=cohort_with_n,y=as.numeric(HR)))
   geom_hline(yintercept=1,linetype="dashed") + ggtitle(var1_string) +
   theme(legend.position="bottom",plot.title=element_text(hjust=0.5,size=16),axis.text.x=element_text(size=16,color="black"),axis.text.y=element_text(size=14,color="black"),
   axis.title.y=element_text(size=16)) + coord_trans(y="log2") + scale_color_manual(values=c("red","blue")) + scale_y_continuous(breaks=var1_y_breaks)
-ggsave(pdf_string,g_var1_allmeta_hr_p,height=7,width=8)
+ggsave(png_string,g_var1_allmeta_hr_p,height=7,width=8)
 
 return(df_cph_var1)
 }
 
-plot_multicohort_survival_double <- function(df1,df2,var1,var1_string,var2,var2_string,var1var2_string,pdf_string,ymin_label_shift,ymax_label_shift,var1_y_breaks) {
-#print(pdf_string)
+plot_multicohort_survival_double <- function(df1,df2,var1,var1_string,var2,var2_string,var1var2_string,png_string,ymin_label_shift,ymax_label_shift,var1_y_breaks) {
+#print(png_string)
 
 df1$var1 <- df1[,var1]
 df2$var1 <- df2[,var1]
@@ -3239,7 +3240,7 @@ g_var1var2_allmeta <- ggplot(df_cph_var1var2,aes(x=cohort_with_n,y=as.numeric(HR
   position=position_dodge(width = 0.25),size=3.5) + geom_hline(yintercept=1,linetype="dashed") + ggtitle(var1var2_string) +
   theme(legend.position="bottom",plot.title=element_text(hjust=0.5,size=16),axis.text.x=element_text(size=16,color="black"),axis.text.y=element_text(size=14,color="black"),
   axis.title.y=element_text(size=16)) + coord_trans(y="log2") + scale_color_manual(values=c("blue","red")) + scale_y_continuous(breaks=var1_y_breaks)
-ggsave(pdf_string,g_var1var2_allmeta,height=7,width=8)
+ggsave(png_string,g_var1var2_allmeta,height=7,width=8)
 } else {
 g_var1var2_allmeta <- ggplot(df_cph_var1var2,aes(x=cohort_with_n,y=as.numeric(HR),color=gene)) +
   geom_point(aes(size=as.numeric(cohort_n)),position=position_dodge(width = 0.25)) + geom_pointrange(aes(ymin=as.numeric(HR_lo),ymax=as.numeric(HR_hi)),position=position_dodge(width = 0.25)) +
@@ -3249,7 +3250,7 @@ g_var1var2_allmeta <- ggplot(df_cph_var1var2,aes(x=cohort_with_n,y=as.numeric(HR
   position=position_dodge(width = 0.25),size=3.5) + geom_hline(yintercept=1,linetype="dashed") + ggtitle(var1var2_string) +
   theme(legend.position="bottom",plot.title=element_text(hjust=0.5,size=16),axis.text.x=element_text(size=16,color="black"),axis.text.y=element_text(size=14,color="black"),
   axis.title.y=element_text(size=16)) + coord_trans(y="log2") + scale_color_manual(values=c("blue","red")) + scale_y_continuous(breaks=var1_y_breaks)
-ggsave(pdf_string,g_var1var2_allmeta,height=7,width=8)
+ggsave(png_string,g_var1var2_allmeta,height=7,width=8)
 }
 
 return(df_cph_var1var2)
@@ -3269,84 +3270,84 @@ n_van <- nrow(clin[clin$cohort=="VanAllen",])
 n_aus <- nrow(skcm_clin[skcm_clin$cohort=="Gide",])
 n_liu <- nrow(skcm_clin[skcm_clin$cohort=="Liu",])
 
-df_cph_CD274 <- plot_multicohort_survival(clin,skcm_clin,"CD274","CD274","figure4_outputs/S27a.multicohort_CD274_HR_p.pdf",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S27a.multicohort_CD274_HR_p.pdf")
+df_cph_CD274 <- plot_multicohort_survival(clin,skcm_clin,"CD274","CD274","figure4_outputs/S27a.multicohort_CD274_HR_p.png",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S27a.multicohort_CD274_HR_p.png")
 ```
 
-<embed src="figure4_outputs/S27a.multicohort_CD274_HR_p.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S27a.multicohort_CD274_HR_p.png" width="75%" height="75%" />
 
 ``` {.r}
-df_cph_CYT <- plot_multicohort_survival(clin,skcm_clin,"CYT","CYT","figure4_outputs/S27b.multicohort_CYT_HR_p.pdf",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S27b.multicohort_CYT_HR_p.pdf")
+df_cph_CYT <- plot_multicohort_survival(clin,skcm_clin,"CYT","CYT","figure4_outputs/S27b.multicohort_CYT_HR_p.png",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S27b.multicohort_CYT_HR_p.png")
 ```
 
-<embed src="figure4_outputs/S27b.multicohort_CYT_HR_p.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S27b.multicohort_CYT_HR_p.png" width="75%" height="75%" />
 
 ``` {.r}
-df_cph_GEP <- plot_multicohort_survival(clin,skcm_clin,"GEP","GEP","figure4_outputs/S27c.multicohort_GEP_HR_p.pdf",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S27c.multicohort_GEP_HR_p.pdf")
+df_cph_GEP <- plot_multicohort_survival(clin,skcm_clin,"GEP","GEP","figure4_outputs/S27c.multicohort_GEP_HR_p.png",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S27c.multicohort_GEP_HR_p.png")
 ```
 
-<embed src="figure4_outputs/S27c.multicohort_GEP_HR_p.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S27c.multicohort_GEP_HR_p.png" width="75%" height="75%" />
 
 ``` {.r}
-df_cph_IMPRES <- plot_multicohort_survival(clin,skcm_clin,"IMPRES","IMPRES","figure4_outputs/S27d.multicohort_IMPRES_HR_p.pdf",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S27d.multicohort_IMPRES_HR_p.pdf")
+df_cph_IMPRES <- plot_multicohort_survival(clin,skcm_clin,"IMPRES","IMPRES","figure4_outputs/S27d.multicohort_IMPRES_HR_p.png",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S27d.multicohort_IMPRES_HR_p.png")
 ```
 
-<embed src="figure4_outputs/S27d.multicohort_IMPRES_HR_p.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S27d.multicohort_IMPRES_HR_p.png" width="75%" height="75%" />
 
 ``` {.r}
-df_cph_MHC_II_zscore <- plot_multicohort_survival(clin,skcm_clin,"MHC_II_zscore","MHC II z-score","figure4_outputs/S27e.multicohort_MHC_II_zscore_HR_p.pdf",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S27e.multicohort_MHC_II_zscore_HR_p.pdf")
+df_cph_MHC_II_zscore <- plot_multicohort_survival(clin,skcm_clin,"MHC_II_zscore","MHC II z-score","figure4_outputs/S27e.multicohort_MHC_II_zscore_HR_p.png",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S27e.multicohort_MHC_II_zscore_HR_p.png")
 ```
 
-<embed src="figure4_outputs/S27e.multicohort_MHC_II_zscore_HR_p.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S27e.multicohort_MHC_II_zscore_HR_p.png" width="75%" height="75%" />
 
 ``` {.r}
 clin$TIDE <- clin$TIDE_Score
 skcm_clin$TIDE <- skcm_clin$TIDE_Score
-df_cph_TIDE <- plot_multicohort_survival(clin,skcm_clin,"TIDE","TIDE","figure4_outputs/S27f.multicohort_TIDE_HR_p.pdf",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S27f.multicohort_TIDE_HR_p.pdf")
+df_cph_TIDE <- plot_multicohort_survival(clin,skcm_clin,"TIDE","TIDE","figure4_outputs/S27f.multicohort_TIDE_HR_p.png",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S27f.multicohort_TIDE_HR_p.png")
 ```
 
-<embed src="figure4_outputs/S27f.multicohort_TIDE_HR_p.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S27f.multicohort_TIDE_HR_p.png" width="75%" height="75%" />
 
 ``` {.r}
-df_cph_TCB <- plot_multicohort_survival(clin,skcm_clin,"log10_rna_tcb","TCB","figure4_outputs/S27g.multicohort_TCB_HR_p.pdf",0.5,c(0.25,0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S27g.multicohort_TCB_HR_p.pdf")
+df_cph_TCB <- plot_multicohort_survival(clin,skcm_clin,"log10_rna_tcb","TCB","figure4_outputs/S27g.multicohort_TCB_HR_p.png",0.5,c(0.25,0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S27g.multicohort_TCB_HR_p.png")
 ```
 
-<embed src="figure4_outputs/S27g.multicohort_TCB_HR_p.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S27g.multicohort_TCB_HR_p.png" width="75%" height="75%" />
 
 ``` {.r}
-df_cph_BCB <- plot_multicohort_survival(clin,skcm_clin,"log10_rna_bcb","BCB","figure4_outputs/S27h.multicohort_BCB_HR_p.pdf",0.5,c(0.25,0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S27h.multicohort_BCB_HR_p.pdf")
+df_cph_BCB <- plot_multicohort_survival(clin,skcm_clin,"log10_rna_bcb","BCB","figure4_outputs/S27h.multicohort_BCB_HR_p.png",0.5,c(0.25,0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S27h.multicohort_BCB_HR_p.png")
 ```
 
-<embed src="figure4_outputs/S27h.multicohort_BCB_HR_p.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S27h.multicohort_BCB_HR_p.png" width="75%" height="75%" />
 
 ``` {.r}
-df_cph_MAP4K1TBX3 <- plot_multicohort_survival_double(clin,skcm_clin,"MAP4K1","MAP4K1","TBX3","TBX3","MAP4K1+TBX3","figure4_outputs/S27i.multicohort_MAP4K1TBX3.pdf",0.55,0.5,c(0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S27i.multicohort_MAP4K1TBX3.pdf")
+df_cph_MAP4K1TBX3 <- plot_multicohort_survival_double(clin,skcm_clin,"MAP4K1","MAP4K1","TBX3","TBX3","MAP4K1+TBX3","figure4_outputs/S27i.multicohort_MAP4K1TBX3.png",0.55,0.5,c(0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S27i.multicohort_MAP4K1TBX3.png")
 ```
 
-<embed src="figure4_outputs/S27i.multicohort_MAP4K1TBX3.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S27i.multicohort_MAP4K1TBX3.png" width="75%" height="75%" />
 
 ``` {.r}
-df_cph_MAP4K1AGER <- plot_multicohort_survival_double(clin,skcm_clin,"MAP4K1","MAP4K1","AGER","AGER","MAP4K1+AGER","figure4_outputs/S27j.multicohort_MAP4K1AGER.pdf",0.55,0.5,c(0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S27j.multicohort_MAP4K1AGER.pdf")
+df_cph_MAP4K1AGER <- plot_multicohort_survival_double(clin,skcm_clin,"MAP4K1","MAP4K1","AGER","AGER","MAP4K1+AGER","figure4_outputs/S27j.multicohort_MAP4K1AGER.png",0.55,0.5,c(0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S27j.multicohort_MAP4K1AGER.png")
 ```
 
-<embed src="figure4_outputs/S27j.multicohort_MAP4K1AGER.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S27j.multicohort_MAP4K1AGER.png" width="75%" height="75%" />
 
 ``` {.r}
 df_cph_meanhighOSmeanlowOS <- plot_multicohort_survival_double(clin,skcm_clin,"mean_highos_genes_z","High OS genes",
-                                   "mean_lowos_genes_z","Low OS genes","Mean of high OS and low OS genes","figure4_outputs/S27k.multicohort_meanhighOSmeanlowOS.pdf",0.01,1,c(0.25,0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S27k.multicohort_meanhighOSmeanlowOS.pdf")
+                                   "mean_lowos_genes_z","Low OS genes","Mean of high OS and low OS genes","figure4_outputs/S27k.multicohort_meanhighOSmeanlowOS.png",0.01,1,c(0.25,0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S27k.multicohort_meanhighOSmeanlowOS.png")
 ```
 
-<embed src="figure4_outputs/S27k.multicohort_meanhighOSmeanlowOS.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S27k.multicohort_meanhighOSmeanlowOS.png" width="75%" height="75%" />
 
 ``` {.r}
 multicohort_table <- data.frame(df_cph_CD274$cohort,stringsAsFactors=F)
@@ -3379,10 +3380,10 @@ write.table(multicohort_table,"figure4_outputs/CPBVal_withincohort_performance.t
 Functions
 
 ``` {.r}
-plot_bytreatment_survival <- function(df1,var1,var1_string,pdf_string,ymax_label_shift,var1_y_breaks) {
-#plot_bytreatment_survival(comb_clin,"CD274","CD274","S28a.bytreatment_CD274_HR_p.pdf",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
+plot_bytreatment_survival <- function(df1,var1,var1_string,png_string,ymax_label_shift,var1_y_breaks) {
+#plot_bytreatment_survival(comb_clin,"CD274","CD274","S28a.bytreatment_CD274_HR_p.png",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
 
-#print(pdf_string)
+#print(png_string)
 
 df1$var1 <- df1[,var1]
 
@@ -3458,13 +3459,13 @@ g_var1_allmeta_hr_p <- ggplot(df_cph_var1,aes(x=cohort_with_n,y=as.numeric(HR)))
   theme(legend.position="bottom",plot.title=element_text(hjust=0.5,size=16),axis.text.x=element_text(size=16,color="black"),axis.text.y=element_text(size=14,color="black"),
   axis.title.y=element_text(size=16)) + coord_trans(y="log2") + scale_color_manual(values=c("red","blue")) + scale_y_continuous(breaks=var1_y_breaks) +
   geom_vline(xintercept=3.5,linetype="dashed")
-ggsave(pdf_string,g_var1_allmeta_hr_p,height=7,width=9)
+ggsave(png_string,g_var1_allmeta_hr_p,height=7,width=9)
 
 return(df_cph_var1)
 }
 
-plot_bytreatment_survival_double <- function(df1,var1,var1_string,var2,var2_string,var1var2_string,pdf_string,ymin_label_shift,ymax_label_shift,var1_y_breaks) {
-#print(pdf_string)
+plot_bytreatment_survival_double <- function(df1,var1,var1_string,var2,var2_string,var1var2_string,png_string,ymin_label_shift,ymax_label_shift,var1_y_breaks) {
+#print(png_string)
 
 df1$var1 <- df1[,var1]
 df1$var2 <- df1[,var2]
@@ -3583,7 +3584,7 @@ g_var1var2_allmeta <- ggplot(df_cph_var1var2,aes(x=cohort_with_n,y=as.numeric(HR
   theme(legend.position="bottom",plot.title=element_text(hjust=0.5,size=16),axis.text.x=element_text(size=16,color="black"),axis.text.y=element_text(size=14,color="black"),
   axis.title.y=element_text(size=16)) + coord_trans(y="log2") + scale_color_manual(values=c("blue","red")) + scale_y_continuous(breaks=var1_y_breaks) +
   geom_vline(xintercept=3.5,linetype="dashed")
-ggsave(pdf_string,g_var1var2_allmeta,height=7,width=9)
+ggsave(png_string,g_var1var2_allmeta,height=7,width=9)
 } else {
 g_var1var2_allmeta <- ggplot(df_cph_var1var2,aes(x=cohort_with_n,y=as.numeric(HR),color=gene)) +
   geom_point(aes(size=as.numeric(cohort_n)),position=position_dodge(width = 0.25)) + geom_pointrange(aes(ymin=as.numeric(HR_lo),ymax=as.numeric(HR_hi)),position=position_dodge(width = 0.25)) +
@@ -3594,7 +3595,7 @@ g_var1var2_allmeta <- ggplot(df_cph_var1var2,aes(x=cohort_with_n,y=as.numeric(HR
   theme(legend.position="bottom",plot.title=element_text(hjust=0.5,size=16),axis.text.x=element_text(size=16,color="black"),axis.text.y=element_text(size=14,color="black"),
   axis.title.y=element_text(size=16)) + coord_trans(y="log2") + scale_color_manual(values=c("blue","red")) + scale_y_continuous(breaks=var1_y_breaks) +
   geom_vline(xintercept=3.5,linetype="dashed")
-ggsave(pdf_string,g_var1var2_allmeta,height=7,width=9)
+ggsave(png_string,g_var1var2_allmeta,height=7,width=9)
 }
 
 
@@ -3615,82 +3616,82 @@ n_pd1ctla4 <- nrow(comb_clin[comb_clin$therapy_simplified=="CTLA4+PD1",])
 n_pd1nopriorctla4 <- nrow(comb_clin[!is.na(comb_clin$prior_CTLA4)&comb_clin$therapy_simplified=="PD1"&comb_clin$prior_CTLA4==FALSE,])
 n_pd1priorctla4 <- nrow(comb_clin[!is.na(comb_clin$prior_CTLA4)&comb_clin$therapy_simplified=="PD1"&comb_clin$prior_CTLA4==TRUE,])
 
-df_comb_CD274 <- plot_bytreatment_survival(comb_clin,"CD274","CD274","figure4_outputs/S28a.bytreatment_CD274_HR_p.pdf",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S28a.bytreatment_CD274_HR_p.pdf")
+df_comb_CD274 <- plot_bytreatment_survival(comb_clin,"CD274","CD274","figure4_outputs/S28a.bytreatment_CD274_HR_p.png",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S28a.bytreatment_CD274_HR_p.png")
 ```
 
-<embed src="figure4_outputs/S28a.bytreatment_CD274_HR_p.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S28a.bytreatment_CD274_HR_p.png" width="75%" height="75%" />
 
 ``` {.r}
-df_comb_CYT <- plot_bytreatment_survival(comb_clin,"CYT","CYT","figure4_outputs/S28b.bytreatment_CYT_HR_p.pdf",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S28b.bytreatment_CYT_HR_p.pdf")
+df_comb_CYT <- plot_bytreatment_survival(comb_clin,"CYT","CYT","figure4_outputs/S28b.bytreatment_CYT_HR_p.png",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S28b.bytreatment_CYT_HR_p.png")
 ```
 
-<embed src="figure4_outputs/S28b.bytreatment_CYT_HR_p.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S28b.bytreatment_CYT_HR_p.png" width="75%" height="75%" />
 
 ``` {.r}
-df_comb_GEP <- plot_bytreatment_survival(comb_clin,"GEP","GEP","figure4_outputs/S28c.bytreatment_GEP_HR_p.pdf",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S28c.bytreatment_GEP_HR_p.pdf")
+df_comb_GEP <- plot_bytreatment_survival(comb_clin,"GEP","GEP","figure4_outputs/S28c.bytreatment_GEP_HR_p.png",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S28c.bytreatment_GEP_HR_p.png")
 ```
 
-<embed src="figure4_outputs/S28c.bytreatment_GEP_HR_p.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S28c.bytreatment_GEP_HR_p.png" width="75%" height="75%" />
 
 ``` {.r}
-df_comb_IMPRES <- plot_bytreatment_survival(comb_clin,"IMPRES","IMPRES","figure4_outputs/S28d.bytreatment_IMPRES_HR_p.pdf",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S28d.bytreatment_IMPRES_HR_p.pdf")
+df_comb_IMPRES <- plot_bytreatment_survival(comb_clin,"IMPRES","IMPRES","figure4_outputs/S28d.bytreatment_IMPRES_HR_p.png",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S28d.bytreatment_IMPRES_HR_p.png")
 ```
 
-<embed src="figure4_outputs/S28d.bytreatment_IMPRES_HR_p.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S28d.bytreatment_IMPRES_HR_p.png" width="75%" height="75%" />
 
 ``` {.r}
-df_comb_MHC_II_zscore <- plot_bytreatment_survival(comb_clin,"MHC_II_zscore","MHC II z-score","figure4_outputs/S28e.bytreatment_MHC_II_zscore_HR_p.pdf",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S28e.bytreatment_MHC_II_zscore_HR_p.pdf")
+df_comb_MHC_II_zscore <- plot_bytreatment_survival(comb_clin,"MHC_II_zscore","MHC II z-score","figure4_outputs/S28e.bytreatment_MHC_II_zscore_HR_p.png",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S28e.bytreatment_MHC_II_zscore_HR_p.png")
 ```
 
-<embed src="figure4_outputs/S28e.bytreatment_MHC_II_zscore_HR_p.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S28e.bytreatment_MHC_II_zscore_HR_p.png" width="75%" height="75%" />
 
 ``` {.r}
-df_comb_TIDE <- plot_bytreatment_survival(comb_clin,"TIDE","TIDE","figure4_outputs/S28f.bytreatment_TIDE_HR_p.pdf",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S28f.bytreatment_TIDE_HR_p.pdf")
+df_comb_TIDE <- plot_bytreatment_survival(comb_clin,"TIDE","TIDE","figure4_outputs/S28f.bytreatment_TIDE_HR_p.png",0.5,c(0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S28f.bytreatment_TIDE_HR_p.png")
 ```
 
-<embed src="figure4_outputs/S28f.bytreatment_TIDE_HR_p.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S28f.bytreatment_TIDE_HR_p.png" width="75%" height="75%" />
 
 ``` {.r}
-df_comb_TCB <- plot_bytreatment_survival(comb_clin,"log10_rna_tcb","TCB","figure4_outputs/S28g.bytreatment_TCB_HR_p.pdf",0.5,c(0.25,0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S28g.bytreatment_TCB_HR_p.pdf")
+df_comb_TCB <- plot_bytreatment_survival(comb_clin,"log10_rna_tcb","TCB","figure4_outputs/S28g.bytreatment_TCB_HR_p.png",0.5,c(0.25,0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S28g.bytreatment_TCB_HR_p.png")
 ```
 
-<embed src="figure4_outputs/S28g.bytreatment_TCB_HR_p.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S28g.bytreatment_TCB_HR_p.png" width="75%" height="75%" />
 
 ``` {.r}
-df_comb_BCB <- plot_bytreatment_survival(comb_clin,"log10_rna_bcb","BCB","figure4_outputs/S28h.bytreatment_BCB_HR_p.pdf",0.5,c(0.25,0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S28h.bytreatment_BCB_HR_p.pdf")
+df_comb_BCB <- plot_bytreatment_survival(comb_clin,"log10_rna_bcb","BCB","figure4_outputs/S28h.bytreatment_BCB_HR_p.png",0.5,c(0.25,0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S28h.bytreatment_BCB_HR_p.png")
 ```
 
-<embed src="figure4_outputs/S28h.bytreatment_BCB_HR_p.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S28h.bytreatment_BCB_HR_p.png" width="75%" height="75%" />
 
 ``` {.r}
-df_comb_MAP4K1TBX3 <- plot_bytreatment_survival_double(comb_clin,"MAP4K1","MAP4K1","TBX3","TBX3","MAP4K1+TBX3","figure4_outputs/S28i.bytreatment_MAP4K1TBX3.pdf",0.55,0.5,c(0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S28i.bytreatment_MAP4K1TBX3.pdf")
+df_comb_MAP4K1TBX3 <- plot_bytreatment_survival_double(comb_clin,"MAP4K1","MAP4K1","TBX3","TBX3","MAP4K1+TBX3","figure4_outputs/S28i.bytreatment_MAP4K1TBX3.png",0.55,0.5,c(0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S28i.bytreatment_MAP4K1TBX3.png")
 ```
 
-<embed src="figure4_outputs/S28i.bytreatment_MAP4K1TBX3.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S28i.bytreatment_MAP4K1TBX3.png" width="75%" height="75%" />
 
 ``` {.r}
-df_comb_MAP4K1AGER <- plot_bytreatment_survival_double(comb_clin,"MAP4K1","MAP4K1","AGER","AGER","MAP4K1+AGER","figure4_outputs/S28j.bytreatment_MAP4K1AGER.pdf",0.55,0.5,c(0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S28j.bytreatment_MAP4K1AGER.pdf")
+df_comb_MAP4K1AGER <- plot_bytreatment_survival_double(comb_clin,"MAP4K1","MAP4K1","AGER","AGER","MAP4K1+AGER","figure4_outputs/S28j.bytreatment_MAP4K1AGER.png",0.55,0.5,c(0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S28j.bytreatment_MAP4K1AGER.png")
 ```
 
-<embed src="figure4_outputs/S28j.bytreatment_MAP4K1AGER.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S28j.bytreatment_MAP4K1AGER.png" width="75%" height="75%" />
 
 ``` {.r}
 df_comb_meanhighOSmeanlowOS <- plot_bytreatment_survival_double(comb_clin,"mean_highos_genes_z","High OS genes",
-                                   "mean_lowos_genes_z","Low OS genes","Mean of high OS and low OS genes","figure4_outputs/S28k.bytreatment_meanhighOSmeanlowOS.pdf",0.01,1,c(0.25,0.5,0.75,1,1.5,2,3,4,5))
-knitr::include_graphics("figure4_outputs/S28k.bytreatment_meanhighOSmeanlowOS.pdf")
+                                   "mean_lowos_genes_z","Low OS genes","Mean of high OS and low OS genes","figure4_outputs/S28k.bytreatment_meanhighOSmeanlowOS.png",0.01,1,c(0.25,0.5,0.75,1,1.5,2,3,4,5))
+knitr::include_graphics("figure4_outputs/S28k.bytreatment_meanhighOSmeanlowOS.png")
 ```
 
-<embed src="figure4_outputs/S28k.bytreatment_meanhighOSmeanlowOS.pdf" width="600px" height="600px" type="application/pdf" />
+<img src="figure4_outputs/S28k.bytreatment_meanhighOSmeanlowOS.png" width="75%" height="75%" />
 
 ``` {.r}
 bytreatment_table <- data.frame(df_comb_CD274$cohort,stringsAsFactors=F)
@@ -3756,35 +3757,34 @@ s_de_res_tmpRanks_go <- fgsea(pathways = pathways.go, stats = s_de_res_tmpRanks,
 #write.table(data.frame(arrange(s_de_res_tmpRanks_go[s_de_res_tmpRanks_go$padj<0.01,],NES))[,c(1:7)],"figure4_outputs/fcmeta_pcaexcl_ccle.TBX3corr_GOterms.txt",quote=F,sep="\t")
 topPathwaysUp <- arrange(s_de_res_tmpRanks_go[padj<0.01&NES<0,],NES)[1:20]$pathway
 topPathwaysDown <- arrange(s_de_res_tmpRanks_go[padj<0.01&NES>0,],-NES)[1:20]$pathway
-pdf("figure4_outputs/S29a.i.ccle.gsea_GOterms.highTBX3_enriched_pathways.pdf",height=7,width=16)
+png("figure4_outputs/S29a.i.ccle.gsea_GOterms.highTBX3_enriched_pathways.png",height=700,width=1600,res=100)
 plotGseaTable(pathways.go[topPathwaysDown[!is.na(topPathwaysDown)]], s_de_res_tmpRanks, s_de_res_tmpRanks_go, gseaParam = 0.5)
 dev.off()
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/S29a.i.ccle.gsea_GOterms.highTBX3_enriched_pathways.pdf")
+knitr::include_graphics("figure4_outputs/S29a.i.ccle.gsea_GOterms.highTBX3_enriched_pathways.png")
 ```
 
-<embed src="figure4_outputs/S29a.i.ccle.gsea_GOterms.highTBX3_enriched_pathways.pdf" width="700px" height="700px" type="application/pdf" />
+<img src="figure4_outputs/S29a.i.ccle.gsea_GOterms.highTBX3_enriched_pathways.png" width="75%" height="75%" />
 
 ``` {.r}
-pdf("figure4_outputs/S29a.ii.ccle.gsea_GOterms.lowTBX3_enriched_pathways.pdf",height=7,width=16)
+png("figure4_outputs/S29a.ii.ccle.gsea_GOterms.lowTBX3_enriched_pathways.png",height=700,width=1600,res=100)
 plotGseaTable(pathways.go[topPathwaysUp[!is.na(topPathwaysUp)]], s_de_res_tmpRanks, s_de_res_tmpRanks_go, gseaParam = 0.5)
 dev.off()
 ```
 
-    ## pdf 
+    ## png 
     ##   2
 
 ``` {.r}
-knitr::include_graphics("figure4_outputs/S29a.ii.ccle.gsea_GOterms.lowTBX3_enriched_pathways.pdf")
+knitr::include_graphics("figure4_outputs/S29a.ii.ccle.gsea_GOterms.lowTBX3_enriched_pathways.png")
 ```
 
-<embed src="figure4_outputs/S29a.ii.ccle.gsea_GOterms.lowTBX3_enriched_pathways.pdf" width="700px" height="700px" type="application/pdf" />
-
+<img src="figure4_outputs/S29a.ii.ccle.gsea_GOterms.lowTBX3_enriched_pathways.png" width="75%" height="75%" />
 
 ``` {.r}
 color20 <- c("#e6194b","#3cb44b","#ffe119","#4363d8","#f58231","#911eb4","#46f0f0","#f032e6","#bcf60c","#fabebe","#008080",
@@ -3802,35 +3802,35 @@ jerby_normal_tsne$TBX3 <- as.numeric(jerby_tpm[which(jerby_tpm$GENE=="TBX3"),jer
 jerby_normal_tsne$NGFR <- as.numeric(jerby_tpm[which(jerby_tpm$GENE=="NGFR"),jerby_normal_tsne$NAME])
 
 g_jerby_normal_celltype <- ggplot(jerby_normal_tsne,aes(x=X,y=Y,color=cell.type)) + geom_point(size=1) + xlab("tSNE1") + ylab("tSNE2") + theme_classic() + scale_color_manual(values=cbbPalette) + theme(legend.position="bottom")
-ggsave("figure4_outputs/S29b.jerby_normal_celltype.pdf",g_jerby_normal_celltype,height=7,width=7)
-knitr::include_graphics("figure4_outputs/S29b.jerby_normal_celltype.pdf")
+ggsave("figure4_outputs/S29b.jerby_normal_celltype.png",g_jerby_normal_celltype,height=7,width=7)
+knitr::include_graphics("figure4_outputs/S29b.jerby_normal_celltype.png")
 ```
 
-<embed src="figure4_outputs/S29b.jerby_normal_celltype.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure4_outputs/S29b.jerby_normal_celltype.png" width="75%" height="75%" />
 
 ``` {.r}
 g_jerby_normal_TBX3_zero <- ggplot(jerby_normal_tsne,aes(x=X,y=Y,color=TBX3>0)) + geom_point(size=1) + xlab("tSNE1") + ylab("tSNE2") + theme_classic() + scale_color_manual(values=c("black","red")) + theme(legend.position="bottom")
-ggsave("figure4_outputs/S29c.jerby_normal_TBX3_zero_redblack.pdf",g_jerby_normal_TBX3_zero,height=7,width=7)
-knitr::include_graphics("figure4_outputs/S29c.jerby_normal_TBX3_zero_redblack.pdf")
+ggsave("figure4_outputs/S29c.jerby_normal_TBX3_zero_redblack.png",g_jerby_normal_TBX3_zero,height=7,width=7)
+knitr::include_graphics("figure4_outputs/S29c.jerby_normal_TBX3_zero_redblack.png")
 ```
 
-<embed src="figure4_outputs/S29c.jerby_normal_TBX3_zero_redblack.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure4_outputs/S29c.jerby_normal_TBX3_zero_redblack.png" width="75%" height="75%" />
 
 ``` {.r}
 g_jerby_tumor_bypatient <- ggplot(jerby_tumor_tsne,aes(x=X,y=Y,color=LABELS)) + geom_point(size=1) + xlab("tSNE1") + ylab("tSNE2") + theme_classic() + scale_color_manual(values=color20) + theme(legend.position="bottom")
-ggsave("figure4_outputs/S29d.jerby_tumor_bypatient.pdf",g_jerby_tumor_bypatient,height=7,width=7)
-knitr::include_graphics("figure4_outputs/S29d.jerby_tumor_bypatient.pdf")
+ggsave("figure4_outputs/S29d.jerby_tumor_bypatient.png",g_jerby_tumor_bypatient,height=7,width=7)
+knitr::include_graphics("figure4_outputs/S29d.jerby_tumor_bypatient.png")
 ```
 
-<embed src="figure4_outputs/S29d.jerby_tumor_bypatient.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure4_outputs/S29d.jerby_tumor_bypatient.png" width="75%" height="75%" />
 
 ``` {.r}
 g_jerby_tumor_TBX3_zero <- ggplot(jerby_tumor_tsne,aes(x=X,y=Y,color=TBX3>0)) + geom_point(size=1) + xlab("tSNE1") + ylab("tSNE2") + theme_classic() + scale_color_manual(values=c("black","red")) + theme(legend.position="bottom")
-ggsave("figure4_outputs/S29e.jerby_tumor_TBX3_zero_redblack.pdf",g_jerby_tumor_TBX3_zero,height=7,width=7)
-knitr::include_graphics("figure4_outputs/S29e.jerby_tumor_TBX3_zero_redblack.pdf")
+ggsave("figure4_outputs/S29e.jerby_tumor_TBX3_zero_redblack.png",g_jerby_tumor_TBX3_zero,height=7,width=7)
+knitr::include_graphics("figure4_outputs/S29e.jerby_tumor_TBX3_zero_redblack.png")
 ```
 
-<embed src="figure4_outputs/S29e.jerby_tumor_TBX3_zero_redblack.pdf" width="500px" height="500px" type="application/pdf" />
+<img src="figure4_outputs/S29e.jerby_tumor_TBX3_zero_redblack.png" width="75%" height="75%" />
 
 ``` {.r}
 jerby_tumor_tsne$cell.type <- "tumor"
@@ -3846,12 +3846,11 @@ tmp_wt_2 <- wilcox.test(jerby_tn_tbx3[jerby_tn_tbx3$cell.type=="tumor"&jerby_tn_
 tmp_wt_2_p <- formatC(tmp_wt_2$p.value,format="e",digits=2)
 
 jerby_tumornormal_TBX3_NGFR_celltype_boxplot <- ggplot(jerby_tn_tbx3,aes(x=cell_type_TBX3NGFR,y=TBX3)) + geom_boxplot(outlier.shape = NA) + geom_jitter() + theme_classic() + xlab("") + theme(legend.position="none") + theme(axis.text.x = element_text(angle = 90, hjust = 1)) + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red") + ggtitle(paste0("Tumor vs. Normal Wilcox p =",tmp_wt_p,"\n","Tumor NGFR positive vs. Tumor NGFR negative Wilcox p =",tmp_wt_2_p))
-ggsave("figure4_outputs/S29f.jerby_tumornormal_TBX3_withNGFR_boxplot_withmeans.pdf",jerby_tumornormal_TBX3_NGFR_celltype_boxplot,height=7,width=7)
-knitr::include_graphics("figure4_outputs/S29f.jerby_tumornormal_TBX3_withNGFR_boxplot_withmeans.pdf")
+ggsave("figure4_outputs/S29f.jerby_tumornormal_TBX3_withNGFR_boxplot_withmeans.png",jerby_tumornormal_TBX3_NGFR_celltype_boxplot,height=7,width=7)
+knitr::include_graphics("figure4_outputs/S29f.jerby_tumornormal_TBX3_withNGFR_boxplot_withmeans.png")
 ```
 
-<embed src="figure4_outputs/S29f.jerby_tumornormal_TBX3_withNGFR_boxplot_withmeans.pdf" width="500px" height="500px" type="application/pdf" />
-
+<img src="figure4_outputs/S29f.jerby_tumornormal_TBX3_withNGFR_boxplot_withmeans.png" width="75%" height="75%" />
 
 ``` {.r}
 sessionInfo()
